@@ -159,6 +159,12 @@ body > .container {
     display: grid;
 }
 
+.tasks li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .task {
     color: black;
     border-radius: 24px;
