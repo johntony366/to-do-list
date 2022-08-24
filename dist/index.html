@@ -1,69 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+            integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header flex">
+                <i class="fa-solid fa-list-check fa-2x"></i>
+                <h1 class="logo">To-Do List</h1>
+            </div>
 
-        <!-- Header -->
-        <div class="header flex">
-            <i class="fa-solid fa-list-check fa-2x"></i>
-            <h1 class="logo">To-Do List</h1>
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="filters">
+                    <ul>
+                        <li>
+                            <button class="all-tasks-btn">All tasks</button>
+                        </li>
+                        <li>
+                            <button class="due-today-btn">Due today</button>
+                        </li>
+                        <li>
+                            <button class="due-week-btn">Due this week</button>
+                        </li>
+                        <li><button class="overdue-btn">Overdue</button></li>
+                    </ul>
+                </div>
+
+                <div class="lists">
+                    <h2>Lists</h2>
+                    <ul>
+                        <li><button>Banglore Checklist</button></li>
+                        <li><button>Banglore Checklist</button></li>
+                        <li><button>Banglore Checklist</button></li>
+                        <li><button>Banglore Checklist</button></li>
+                    </ul>
+                    <button class="add-list-btn flex">
+                        <i class="fa-solid fa-plus"></i>
+                        <p>Add List</p>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main -->
+            <main class="main">
+                <div class="main-header">
+                    <h1 class="list-name">All tasks</h1>
+                    <form class="addTask">
+                        <input
+                            type="text"
+                            name="inputTaskText"
+                            id="inputTaskText"
+                            placeholder="Add a task"
+                        />
+                        <input type="submit" hidden>
+                    </form>
+                </div>
+                <ul class="tasks">
+                    <li>
+                        <div class="task">
+                            <input
+                                type="checkbox"
+                                name="taskCompleted"
+                                id="taskCompleted"
+                            />
+                            <label class="taskText" for="taskCompleted"
+                                >Wash dishes</label
+                            >
+                        </div>
+                    </li>
+                </ul>
+            </main>
+
+            <!-- Footer -->
+            <footer class="footer flex">
+                <p>Copyright &copy; 2022 johntony366</p>
+                <a href="https://github.com/johntony366" target="_blank">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+            </footer>
         </div>
-
-        <!-- Sidebar -->
-        <aside class="sidebar">
-
-            <div class="filters">
-                <ul>
-                    <li><button class="all-tasks-btn">All tasks</button></li>
-                    <li><button class="due-today-btn">Due today</button></li>
-                    <li><button class="due-week-btn">Due this week</button></li>
-                    <li><button class="overdue-btn">Overdue</button></li>
-                </ul>
-            </div>
-
-            <div class="lists">
-                <h2>Lists</h2>
-                <ul>
-                    <li><button>Banglore Checklist</button></li>
-                    <li><button>Banglore Checklist</button></li>
-                    <li><button>Banglore Checklist</button></li>
-                    <li><button>Banglore Checklist</button></li>
-                </ul>
-                <button class="add-list-btn flex">
-                    <i class="fa-solid fa-plus"></i>
-                    <p>Add List</p>
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main -->
-        <main class="main">
-            <h1 class="list-name">All tasks</h1>
-            <ul class="tasks">
-                <li>
-                    <div class="task">
-                        <input type="checkbox" name="taskCompleted" id="taskCompleted">
-                        <label class="taskText" for="taskCompleted">Wash dishes</p>
-                    </div>
-                </li>
-            </ul>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer flex">
-            <p>Copyright &copy; 2022 johntony366</p>
-            <a href="https://github.com/johntony366" target="_blank">
-                <i class="fa-brands fa-github"></i>
-            </a>
-        </footer>
-    </div>
-</body>
+    </body>
 </html>

@@ -34,12 +34,6 @@ a {
     color: var(--p1);
 }
 
-h1,
-h2 {
-    font-weight: 300;
-    margin: 10px 0;
-}
-
 p {
     margin: 10px 0;
 }
@@ -150,10 +144,36 @@ body > .container {
     background-color: var(--p6);
 }
 
-.main .list-name {
+.main-header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    margin-bottom: 24px;
+}
+
+.main-header input[type="text"] {
+    background-color: var(--p4);
+    color: inherit;
+    border: none;
+    border-radius: 12px;
+    padding: 4px 0px 4px 12px;
+    width: 50%;
+}
+
+.main-header form {
+    flex: 1;
+}
+
+.main-header input[type="text"]::placeholder {
+    color: var(--p3);
+    font-family: 'Lato';
+}
+
+/* .main .list-name {
     margin-right: 32px;
     margin-bottom: 32px;
-}
+} */
 
 .tasks {
     display: grid;
