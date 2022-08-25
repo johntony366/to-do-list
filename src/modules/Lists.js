@@ -6,4 +6,16 @@ export default class Lists {
   addList(list) {
     this.lists.push(list);
   }
+
+  getList(listName) {
+    return this.lists.find((list) => list.getName() === listName);
+  }
+
+  getLists() {
+    return this.lists;
+  }
+
+  setLists(lists) {
+    this.lists = lists;
+  }
 }

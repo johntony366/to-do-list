@@ -4,7 +4,15 @@ export default class List {
     this.tasks = [];
   }
 
+  getListName() {
+    return this.name;
+  }
+
   addTask(task) {
     this.tasks.push(task);
+  }
+
+  setTasks(tasks) {
+    this.tasks = tasks;
   }
 }
