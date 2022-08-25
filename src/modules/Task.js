@@ -11,4 +11,8 @@ export default class Task {
   getStatus() {
     return this.active;
   }
+
+  toggleStatus() {
+    this.active = !this.active;
+  }
 }

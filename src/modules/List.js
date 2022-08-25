@@ -12,6 +12,10 @@ export default class List {
     this.tasks.push(task);
   }
 
+  getTask(taskName) {
+    return this.tasks.find((task) => task.getName() === taskName);
+  }
+
   setTasks(tasks) {
     this.tasks = tasks;
   }

@@ -135,6 +135,31 @@ body > .container {
     margin-top: 4px;
 }
 
+.add-list-btn.active {
+    display: none;
+}
+
+.add-list-popup {
+    display: none;
+}
+
+.add-list-popup input[type="text"] {
+    background-color: var(--p4);
+    color: inherit;
+    border: none;
+    border-radius: 12px;
+    padding: 4px 0px 4px 12px;
+}
+
+.add-list-popup input[type="text"]::placeholder {
+    color: var(--p3);
+    font-family: 'Lato';
+}
+
+.add-list-popup.active {
+    display: block;
+}
+
 /* Main */
 .main {
     grid-column: 1 / 2;
