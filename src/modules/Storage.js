@@ -7,35 +7,35 @@ export default class Storage {
     localStorage.setItem("lists", JSON.stringify(lists));
   }
 
-  static #loadListsFromStorage() {
+  static #loadLists() {
     return JSON.parse(localStorage.getItem("lists"));
   }
 
-  static getLists() {
-    const lists = Object.assign(new Lists(), this.#loadListsFromStorage());
+  static getListsObject() {
+    const lists = Object.assign(new Lists(), this.#loadLists());
 
-    lists.setLists(
-      lists.getLists().map((list) => Object.assign(new List(), list))
+    lists.setListsArray(
+      lists.getListsArray().map((list) => Object.assign(new List(), list))
     );
 
-    lists.getLists().forEach((list) => {
-      list.setTasks(
-        list.getTasks.map((task) => Object.assign(new Task(), task))
+    lists.getListsArray().forEach((list) => {
+      list.setTasksArray(
+        list.getTasksArray().map((task) => Object.assign(new Task(), task))
       );
     });
 
     return lists;
   }
 
-  static addList(list) {
-    const lists = Storage.getLists();
+  static addListToListsAndSave(list) {
+    const lists = Storage.getListsObject();
     lists.addList(list);
     Storage.saveLists(lists);
   }
 
-  static addTask(listName, task) {
+  static addTaskToListAndSave(listName, task) {
     const lists = Storage.getLists();
-    const targetList = lists.getList(listName);
+    const targetList = lists.getListByName(listName);
     targetList.addTask(task);
     Storage.saveLists(lists);
   }
