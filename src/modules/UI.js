@@ -24,9 +24,11 @@ export default class UI {
   static createList(list) {
     const ul = document.querySelector(".lists ul");
     const li = document.createElement("li");
+
     li.innerHTML = `<button>${list.getName()}</button>`;
     li.addEventListener("click", () => {
-      UI.loadList(list);
+      const lists = Storage.getListsObject();
+      UI.loadList(lists.getListByName(list.getName()));
     });
     ul.appendChild(li);
   }
@@ -48,7 +50,7 @@ export default class UI {
                               <label class="taskText" for="taskCompleted${i}"
                                   >${task.getDescription()}</label
                               >
-                          </div>
+                          </div>  
                       </li>`;
 
       const taskDiv = tasks.querySelector(".task");
