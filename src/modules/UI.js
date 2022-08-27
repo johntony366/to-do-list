@@ -37,15 +37,15 @@ export default class UI {
 
     const tasks = document.querySelector(".tasks");
     tasks.replaceChildren();
-    list.getTasksArray().forEach((task) => {
+    list.getTasksArray().forEach((task, i) => {
       tasks.innerHTML += `<li>
                           <div class="task">
                               <input
                                   type="checkbox"
                                   name="taskCompleted"
-                                  id="taskCompleted"
+                                  id="taskCompleted${i}"
                               />
-                              <label class="taskText" for="taskCompleted"
+                              <label class="taskText" for="taskCompleted${i}"
                                   >${task.getDescription()}</label
                               >
                           </div>
