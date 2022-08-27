@@ -34,7 +34,7 @@ export default class Storage {
   }
 
   static addTaskToListAndSave(listName, task) {
-    const lists = Storage.getLists();
+    const lists = Storage.getListsObject();
     const targetList = lists.getListByName(listName);
     targetList.addTask(task);
     Storage.saveLists(lists);

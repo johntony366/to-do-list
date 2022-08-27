@@ -4,7 +4,7 @@ export default class List {
     this.tasks = [];
   }
 
-  getListName() {
+  getName() {
     return this.name;
   }
 

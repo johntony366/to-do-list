@@ -1,11 +1,13 @@
+import Task from "./Task";
 import List from "./List";
 import Storage from "./Storage";
 
 export default class UI {
   static loadToDoList() {
+    const lists = Storage.getListsObject();
     UI.loadLists();
     UI.setupButtons();
-    // UI.loadList("All tasks");
+    UI.loadList(lists.getListByName("All tasks"));
   }
 
   // Loading
@@ -13,14 +15,16 @@ export default class UI {
     Storage.getListsObject()
       .getListsArray()
       .forEach((list) => {
-        UI.createList(list);
+        if (list.getName() !== "All tasks") {
+          UI.createList(list);
+        }
       });
   }
 
   static createList(list) {
     const ul = document.querySelector(".lists ul");
     const li = document.createElement("li");
-    li.innerHTML = `<button>${list.getListName()}</button>`;
+    li.innerHTML = `<button>${list.getName()}</button>`;
     li.addEventListener("click", () => {
       UI.loadList(list);
     });
@@ -29,7 +33,7 @@ export default class UI {
 
   static loadList(list) {
     const h1 = document.querySelector(".list-name");
-    h1.textContent = list.getListName();
+    h1.textContent = list.getName();
 
     const tasks = document.querySelector(".tasks");
     tasks.replaceChildren();
@@ -59,6 +63,14 @@ export default class UI {
     const addListForm = document.querySelector(".add-list-form");
     const listInput = document.querySelector(".add-list-form .list-name-input");
     const addListButton = document.querySelector(".add-list-btn");
+    const addTaskForm = document.querySelector(".addTaskForm");
+    const taskInput = document.querySelector("#inputTaskText");
+    const allTasksButton = document.querySelector(".all-tasks-btn");
+    const lists = Storage.getListsObject();
+
+    allTasksButton.addEventListener("click", () => {
+      UI.loadList(lists.getListByName("All tasks"));
+    });
 
     addListButton.addEventListener("click", () => {
       this.enableAddListPopup();
@@ -74,6 +86,20 @@ export default class UI {
       UI.createList(newList);
 
       this.disableAddListPopup();
+    });
+
+    addTaskForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // Add task to list
+
+      const newTask = new Task(taskInput.value);
+      const listName = document.querySelector(".list-name").textContent;
+      Storage.addTaskToListAndSave(listName, newTask);
+      if (listName !== "All tasks") {
+        Storage.addTaskToListAndSave("All tasks", newTask);
+      }
+      UI.loadList(Storage.getListsObject().getListByName(listName));
     });
   }
 

@@ -1,6 +1,8 @@
+import List from "./List";
+
 export default class Lists {
   constructor() {
-    this.lists = [];
+    this.lists = [new List("All tasks")];
   }
 
   addList(list) {
