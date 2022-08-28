@@ -9,11 +9,12 @@ export default class List {
   }
 
   addTask(task) {
+    task.setOriginList(this.name);
     this.tasks.push(task);
   }
 
   getTask(taskName) {
-    return this.tasks.find((task) => task.getName() === taskName);
+    return this.tasks.find((task) => task.getDescription() === taskName);
   }
 
   getTaskIndex(taskName) {

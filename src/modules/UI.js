@@ -42,42 +42,69 @@ export default class UI {
     });
   }
 
-  static loadList(list, preserveEntries, preserveTitle) {
-    const h1 = document.querySelector(".list-name");
-    if (!preserveTitle) {
-      h1.textContent = list.getName();
-    }
+  static loadList(list) {
+    UI.setActiveListTitle(list.getName());
+    UI.resetDisplayedTasks();
+    UI.renderTasks(list);
 
+    UI.setupTaskToggle();
+  }
+
+  static setActiveListTitle(listName) {
+    const h1 = document.querySelector(".list-name");
+    h1.textContent = listName;
+  }
+
+  static resetDisplayedTasks() {
     const tasks = document.querySelector(".tasks");
-    if (!preserveEntries) {
-      tasks.replaceChildren();
-    }
+    tasks.replaceChildren();
+  }
+
+  static renderTasks(list) {
+    const tasks = document.querySelector(".tasks");
+    const listName = list.getName();
     list.getTasksArray().forEach((task, i) => {
       tasks.innerHTML += `<li>
                           <div class="task">
                               <input
                                   type="checkbox"
                                   name="taskCompleted"
-                                  id="taskCompleted${i}"
+                                  id="${listName}Task${i}"
                               />
-                              <label class="taskText" for="taskCompleted${i}"
+                              <label class="taskText" for="${listName}Task${i}"
                                   >${task.getDescription()}</label
                               >
                           </div>  
                       </li>`;
+    });
+    UI.renderTaskStatuses(list);
+  }
 
-      const taskDiv = tasks.querySelector(".task");
+  static renderTaskStatuses(list) {
+    list.getTasksArray().forEach((task, i) => {
+      if (!task.getStatus()) {
+        // If task is not active
+        document.querySelector(
+          `#${task.getOriginList()}Task${i}`
+        ).checked = true;
+      }
+    });
+  }
+
+  static setupTaskToggle() {
+    const tasks = document.querySelector(".tasks");
+    const taskDivs = tasks.querySelectorAll(".task input");
+
+    taskDivs.forEach((taskDiv) => {
       taskDiv.addEventListener("click", (e) => {
+        // Problem is it registers separate clicks for label and checkbox
         const lists = Storage.getListsObject();
-        const list = lists.getListByName(h1.textContent);
-
+        const taskName = e.target.labels[0].textContent;
+        const list = lists.getListByTaskName(taskName);
+        const task = list.getTask(taskName);
         task.toggleStatus();
-        list.getTasksArray()[list.getTaskIndex(task.getDescription())] = task;
-        lists.getListsArray()[lists.getListIndex(list.getName())] = list;
 
         Storage.saveLists(lists);
-
-        e.stopPropagation();
       });
     });
   }

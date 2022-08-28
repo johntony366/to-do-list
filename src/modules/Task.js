@@ -15,4 +15,12 @@ export default class Task {
   toggleStatus() {
     this.active = !this.active;
   }
+
+  setOriginList(listName) {
+    this.originListName = listName;
+  }
+
+  getOriginList() {
+    return this.originListName;
+  }
 }

@@ -11,6 +11,12 @@ export default class Lists {
     return this.lists.findIndex((list) => list.getName() === listName);
   }
 
+  getListByTaskName(taskName) {
+    return this.lists.find((list) =>
+      list.getTasksArray().find((task) => task.getDescription() === taskName)
+    );
+  }
+
   getListByName(listName) {
     return this.lists.find((list) => list.getName() === listName);
   }
