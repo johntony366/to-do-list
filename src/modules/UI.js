@@ -25,7 +25,8 @@ export default class UI {
     li.innerHTML = `<button>${list.getName()}</button>`;
     li.addEventListener("click", () => {
       const lists = Storage.getListsObject();
-      UI.loadList(lists.getListByName(list.getName()));
+      // Add code to enable inputhere
+      UI.loadFreshList(lists.getListByName(list.getName()));
     });
     ul.appendChild(li);
   }
@@ -38,15 +39,22 @@ export default class UI {
 
     const lists = Storage.getListsObject();
     lists.getListsArray().forEach((list) => {
-      UI.loadList(list, true, true);
+      UI.loadAdditionalList(list);
     });
+    UI.renderAllTaskStatuses(lists);
   }
 
-  static loadList(list) {
+  static loadFreshList(list) {
     UI.setActiveListTitle(list.getName());
     UI.resetDisplayedTasks();
     UI.renderTasks(list);
+    UI.renderTaskStatuses(list);
 
+    UI.setupTaskToggle();
+  }
+
+  static loadAdditionalList(list) {
+    UI.renderTasks(list);
     UI.setupTaskToggle();
   }
 
@@ -77,7 +85,6 @@ export default class UI {
                           </div>  
                       </li>`;
     });
-    UI.renderTaskStatuses(list);
   }
 
   static renderTaskStatuses(list) {
@@ -88,6 +95,19 @@ export default class UI {
           `#${task.getOriginList()}Task${i}`
         ).checked = true;
       }
+    });
+  }
+
+  static renderAllTaskStatuses(lists) {
+    lists.getListsArray().forEach((list) => {
+      list.getTasksArray().forEach((task, i) => {
+        if (!task.getStatus()) {
+          // If task is not active
+          document.querySelector(
+            `#${task.getOriginList()}Task${i}`
+          ).checked = true;
+        }
+      });
     });
   }
 
@@ -147,7 +167,7 @@ export default class UI {
       const listName = document.querySelector(".list-name").textContent;
       Storage.addTaskToListAndSave(listName, newTask);
 
-      UI.loadList(Storage.getListsObject().getListByName(listName));
+      UI.loadFreshList(Storage.getListsObject().getListByName(listName));
     });
   }
 
