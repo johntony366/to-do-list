@@ -4,10 +4,9 @@ import Storage from "./Storage";
 
 export default class UI {
   static loadToDoList() {
-    const lists = Storage.getListsObject();
     UI.loadLists();
     UI.setupButtons();
-    UI.loadList(lists.getListByName("All tasks"));
+    UI.loadAllTasks();
   }
 
   // Loading
@@ -15,9 +14,7 @@ export default class UI {
     Storage.getListsObject()
       .getListsArray()
       .forEach((list) => {
-        if (list.getName() !== "All tasks") {
-          UI.createList(list);
-        }
+        UI.createList(list);
       });
   }
 
@@ -33,12 +30,28 @@ export default class UI {
     ul.appendChild(li);
   }
 
-  static loadList(list) {
-    const h1 = document.querySelector(".list-name");
-    h1.textContent = list.getName();
-
+  static loadAllTasks() {
     const tasks = document.querySelector(".tasks");
     tasks.replaceChildren();
+    const h1 = document.querySelector(".list-name");
+    h1.textContent = "All tasks";
+
+    const lists = Storage.getListsObject();
+    lists.getListsArray().forEach((list) => {
+      UI.loadList(list, true, true);
+    });
+  }
+
+  static loadList(list, preserveEntries, preserveTitle) {
+    if (!preserveTitle) {
+      const h1 = document.querySelector(".list-name");
+      h1.textContent = list.getName();
+    }
+
+    const tasks = document.querySelector(".tasks");
+    if (!preserveEntries) {
+      tasks.replaceChildren();
+    }
     list.getTasksArray().forEach((task, i) => {
       tasks.innerHTML += `<li>
                           <div class="task">
@@ -57,15 +70,10 @@ export default class UI {
       taskDiv.addEventListener("click", (e) => {
         const lists = Storage.getListsObject();
         const list = lists.getListByName(h1.textContent);
-        const allTasksList = lists.getListByName("All tasks");
 
         task.toggleStatus();
         list.getTasksArray()[list.getTaskIndex(task.getDescription())] = task;
-        allTasksList.getTasksArray()[
-          allTasksList.getTaskIndex(task.getDescription())
-        ] = task;
         lists.getListsArray()[lists.getListIndex(list.getName())] = list;
-        lists.getListsArray()[lists.getListIndex("All tasks")] = allTasksList;
 
         Storage.saveLists(lists);
 
@@ -82,10 +90,9 @@ export default class UI {
     const addTaskForm = document.querySelector(".addTaskForm");
     const taskInput = document.querySelector("#inputTaskText");
     const allTasksButton = document.querySelector(".all-tasks-btn");
-    const lists = Storage.getListsObject();
 
     allTasksButton.addEventListener("click", () => {
-      UI.loadList(lists.getListByName("All tasks"));
+      UI.loadAllTasks();
     });
 
     addListButton.addEventListener("click", () => {
@@ -112,9 +119,7 @@ export default class UI {
       const newTask = new Task(taskInput.value);
       const listName = document.querySelector(".list-name").textContent;
       Storage.addTaskToListAndSave(listName, newTask);
-      if (listName !== "All tasks") {
-        Storage.addTaskToListAndSave("All tasks", newTask);
-      }
+
       UI.loadList(Storage.getListsObject().getListByName(listName));
     });
   }
