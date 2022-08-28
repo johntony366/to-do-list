@@ -27,6 +27,11 @@ export default class Storage {
     return lists;
   }
 
+  static getListByNameFromStorage(listName) {
+    const lists = Storage.getListsObject();
+    return lists.getListByName(listName);
+  }
+
   static addListToListsAndSave(list) {
     const lists = Storage.getListsObject();
     lists.addList(list);

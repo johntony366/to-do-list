@@ -9,6 +9,10 @@ export default class Lists {
     this.lists.push(list);
   }
 
+  getListIndex(listName) {
+    return this.lists.findIndex((list) => list.getName() === listName);
+  }
+
   getListByName(listName) {
     return this.lists.find((list) => list.getName() === listName);
   }

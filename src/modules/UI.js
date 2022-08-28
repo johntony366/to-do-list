@@ -54,8 +54,22 @@ export default class UI {
                       </li>`;
 
       const taskDiv = tasks.querySelector(".task");
-      taskDiv.addEventListener("click", () => {
+      taskDiv.addEventListener("click", (e) => {
+        const lists = Storage.getListsObject();
+        const list = lists.getListByName(h1.textContent);
+        const allTasksList = lists.getListByName("All tasks");
+
         task.toggleStatus();
+        list.getTasksArray()[list.getTaskIndex(task.getDescription())] = task;
+        allTasksList.getTasksArray()[
+          allTasksList.getTaskIndex(task.getDescription())
+        ] = task;
+        lists.getListsArray()[lists.getListIndex(list.getName())] = list;
+        lists.getListsArray()[lists.getListIndex("All tasks")] = allTasksList;
+
+        Storage.saveLists(lists);
+
+        e.stopPropagation();
       });
     });
   }
