@@ -26,12 +26,25 @@ export default class UI {
     li.addEventListener("click", () => {
       const lists = Storage.getListsObject();
       // Add code to enable inputhere
+      UI.enableTaskInput();
+
       UI.loadFreshList(lists.getListByName(list.getName()));
     });
     ul.appendChild(li);
   }
 
+  static enableTaskInput() {
+    const addTaskForm = document.querySelector(".addTaskForm");
+    addTaskForm.style.display = "block";
+  }
+
+  static disableTaskInput() {
+    const addTaskForm = document.querySelector(".addTaskForm");
+    addTaskForm.style.display = "none";
+  }
+
   static loadAllTasks() {
+    UI.disableTaskInput();
     const tasks = document.querySelector(".tasks");
     tasks.replaceChildren();
     const h1 = document.querySelector(".list-name");
