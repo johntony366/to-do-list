@@ -43,8 +43,8 @@ export default class UI {
   }
 
   static loadList(list, preserveEntries, preserveTitle) {
+    const h1 = document.querySelector(".list-name");
     if (!preserveTitle) {
-      const h1 = document.querySelector(".list-name");
       h1.textContent = list.getName();
     }
 
