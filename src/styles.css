@@ -214,12 +214,13 @@ body > .container {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 80%;
 }
 
 .task {
   color: black;
   border-radius: 24px;
-  width: 80%;
+  width: 100%;
   user-select: none;
 
   position: relative;

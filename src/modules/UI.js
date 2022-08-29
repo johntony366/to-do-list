@@ -108,7 +108,16 @@ export default class UI {
                               <label class="taskText" for="${listName}Task${i}"
                                   >${task.getDescription()}</label
                               >
-                          </div>  
+                              </div>
+                            <button class="dropdown-menu-btn">
+                              <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                          <div class="dropdownMenu">
+                            <ul class="options">
+                             <li><button class="dropdown-btn">Edit</button></li>
+                             <li><button class="dropdown-btn">Delete</button></li>
+                             </ul>
+                           </div>  
                       </li>`;
     });
   }
