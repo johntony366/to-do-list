@@ -54,7 +54,7 @@ img {
 body > .container {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 100px 1fr 4fr 100px;
+    grid-template-rows: 100px 1fr 4fr 50px;
     height: 100vh;
 }
 
@@ -273,7 +273,7 @@ body > .container {
 @media (min-width: 980px) {
     body > .container {
         grid-template-columns: 20% 80%;
-        grid-template-rows: 100px 1fr 100px;
+        grid-template-rows: 100px 1fr 50px;
     }
 
     .header {
