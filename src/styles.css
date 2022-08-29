@@ -213,7 +213,6 @@ body > .container {
     color: black;
     border-radius: 24px;
     width: 80%;
-    padding: 8px 12px;
     user-select: none;
 
     position: relative;
@@ -226,7 +225,8 @@ body > .container {
 .task label {
     display: flex;
     align-items: center;
-    padding-left: 24px;
+    padding: 8px 0px;
+    padding-left: 32px;
     color: var(--p1);
 }
 
