@@ -86,6 +86,10 @@ body > .container {
     background-color: var(--p5);
 }
 
+.sidebar i {
+    color: black;
+}
+
 .sidebar ul {
     display: flex;
     gap: 8px;
@@ -98,7 +102,12 @@ body > .container {
     background-color: var(--p3);
     border: none;
     border-radius: 12px;
-    padding: 8px;
+    padding: 0px 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 
     text-align: left;
 }
@@ -295,6 +304,10 @@ body > .container {
 
     .lists h2 {
         margin-top: 24px;
+    }
+
+    .sidebar h2 {
+        margin-bottom: 12px;
     }
 
     .sidebar .add-list-btn {

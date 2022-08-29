@@ -28,29 +28,44 @@
           <h2>Filters</h2>
           <ul>
             <li>
-              <button class="all-tasks-btn">All tasks</button>
+              <button class="all-tasks-btn">
+                <i class="fa-solid fa-rectangle-list"></i>
+                <p>All tasks</p>
+              </button>
             </li>
             <li>
-              <button class="due-today-btn">Due today</button>
+              <button class="due-today-btn">
+                <i class="fa-solid fa-calendar-day"></i>
+                <p>Due today</p>
+              </button>
             </li>
             <li>
-              <button class="due-week-btn">Due this week</button>
+              <button class="due-week-btn">
+                <i class="fa-solid fa-calendar-week"></i>
+                <p>Due this week</p>
+              </button>
             </li>
-            <li><button class="overdue-btn">Overdue</button></li>
+            <li><button class="overdue-btn">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <p>Overdue</p>
+            </button></li>
           </ul>
         </div>
 
         <div class="lists">
           <h2>Lists</h2>
-          <ul>
-          </ul>
-          <button class="add-list-btn flex">
+          <ul></ul>
+          <button class="add-list-btn">
             <i class="fa-solid fa-plus"></i>
             <p>Add List</p>
           </button>
           <div class="add-list-popup">
             <form class="add-list-form">
-              <input type="text" class="list-name-input" placeholder="Enter list name" />
+              <input
+                type="text"
+                class="list-name-input"
+                placeholder="Enter list name"
+              />
               <input type="submit" hidden />
             </form>
           </div>

@@ -22,7 +22,10 @@ export default class UI {
     const ul = document.querySelector(".lists ul");
     const li = document.createElement("li");
 
-    li.innerHTML = `<button>${list.getName()}</button>`;
+    li.innerHTML = `<button>
+    <i class="fa-regular fa-note-sticky"></i>
+    <p>${list.getName()}</p>
+    </button>`;
     li.addEventListener("click", () => {
       const lists = Storage.getListsObject();
       // Add code to enable inputhere
