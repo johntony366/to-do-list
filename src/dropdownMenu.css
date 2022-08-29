@@ -1,0 +1,57 @@
+@import "./palette.css";
+
+.lists li {
+  position: relative;
+}
+
+.sidebar .dropdown-btn {
+  text-align: left;
+  padding: 12px;
+  font-size: 0.9rem;
+
+  background-color: black;
+  color: var(--p1);
+}
+
+.sidebar .dropdown-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar .dropdown-menu-btn {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  z-index: 1;
+  top: 6px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 12px;
+}
+
+.sidebar .dropdown-menu-btn:hover {
+  background-color: rgb(255, 255, 255, 0.8);
+}
+
+.sidebar .dropdown-menu-btn i {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+}
+
+.lists li .dropdownMenu {
+  opacity: 0;
+  pointer-events: none;
+
+  background-color: rgb(0, 0, 0, 0.7);
+  position: absolute;
+  z-index: 100;
+  top: 100%;
+  right: 0;
+
+  padding: 0.75rem;
+}
+
+.lists li .dropdown-menu-btn:focus + div {
+  opacity: 1;
+  pointer-events: auto;
+}

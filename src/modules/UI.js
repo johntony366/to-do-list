@@ -23,9 +23,19 @@ export default class UI {
     const li = document.createElement("li");
 
     li.innerHTML = `<button>
-    <i class="fa-regular fa-note-sticky"></i>
-    <p>${list.getName()}</p>
-    </button>`;
+                <i class="fa-regular fa-note-sticky"></i>
+                <p>${list.getName()}</p>
+                <button class="dropdown-menu-btn">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+              </button>
+              <div class="dropdownMenu">
+                <ul class="options">
+                  <li><button class="dropdown-btn">Edit</button></li>
+                  <li><button class="dropdown-btn">Delete</button></li>
+                </ul>
+              </div>
+    `;
     li.addEventListener("click", () => {
       const lists = Storage.getListsObject();
       // Add code to enable inputhere

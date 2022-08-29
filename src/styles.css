@@ -1,15 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+@import './palette.css';
 
-:root {
-  --p0: #dccdf0;
-  --p1: #c8b6e2;
-  --p2: #a8a4ce;
-  --p3: #7a86b6;
-  --p3t: #7a86b663;
-  --p4: #495c83;
-  --p5: #394a6b;
-  --p6: #303c55;
-}
 
 *,
 *::before,
