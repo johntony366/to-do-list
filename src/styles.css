@@ -159,6 +159,21 @@ body > .container {
   display: block;
 }
 
+.sidebar button {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .sidebar button i {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+  }
+
+  .sidebar .add-list-btn {
+    padding-left: 28px;
+  }
+
 /* Main */
 .main {
   grid-column: 1 / 2;
