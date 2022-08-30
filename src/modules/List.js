@@ -13,6 +13,10 @@ export default class List {
     this.tasks.push(task);
   }
 
+  removeTask(taskName) {
+    this.tasks.splice(this.getTaskIndex(taskName), 1);
+  }
+
   getTask(taskName) {
     return this.tasks.find((task) => task.getDescription() === taskName);
   }

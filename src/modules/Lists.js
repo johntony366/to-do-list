@@ -7,6 +7,10 @@ export default class Lists {
     this.lists.push(list);
   }
 
+  removeList(listName) {
+    this.lists.splice(this.getListIndex(listName), 1);
+  }
+
   getListIndex(listName) {
     return this.lists.findIndex((list) => list.getName() === listName);
   }

@@ -38,10 +38,23 @@ export default class Storage {
     Storage.saveLists(lists);
   }
 
+  static removeListFromListsAndSave(list) {
+    const lists = Storage.getListsObject();
+    lists.removeList(list.getName());
+    Storage.saveLists(lists);
+  }
+
   static addTaskToListAndSave(listName, task) {
     const lists = Storage.getListsObject();
     const targetList = lists.getListByName(listName);
     targetList.addTask(task);
+    Storage.saveLists(lists);
+  }
+
+  static removeTaskFromListAndSave(listName, task) {
+    const lists = Storage.getListsObject();
+    const list = lists.getListByName(listName);
+    list.removeTaskFromListAndSave(task.getDescription());
     Storage.saveLists(lists);
   }
 }
