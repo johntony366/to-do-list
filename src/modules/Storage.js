@@ -38,9 +38,9 @@ export default class Storage {
     Storage.saveLists(lists);
   }
 
-  static removeListFromListsAndSave(list) {
+  static removeListFromListsAndSave(listName) {
     const lists = Storage.getListsObject();
-    lists.removeList(list.getName());
+    lists.removeList(listName);
     Storage.saveLists(lists);
   }
 

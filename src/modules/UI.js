@@ -11,6 +11,9 @@ export default class UI {
 
   // Loading
   static loadLists() {
+    const ul = document.querySelector(".lists ul");
+    ul.replaceChildren();
+
     Storage.getListsObject()
       .getListsArray()
       .forEach((list) => {
@@ -31,11 +34,15 @@ export default class UI {
               </button>
               <div class="dropdownMenu">
                 <ul class="options">
-                  <li><button class="dropdown-btn">Edit</button></li>
-                  <li><button class="dropdown-btn">Delete</button></li>
+                  <li><button class="dropdown-btn list-edit">Edit</button></li>
+                  <li><button class="dropdown-btn list-delete">Delete</button></li>
                 </ul>
               </div>
     `;
+    ul.appendChild(li);
+
+    const listEdit = document.querySelector(".list-edit");
+    const listDelete = document.querySelector(".list-delete");
     li.addEventListener("click", () => {
       const lists = Storage.getListsObject();
       // Add code to enable inputhere
@@ -43,7 +50,11 @@ export default class UI {
 
       UI.loadFreshList(lists.getListByName(list.getName()));
     });
-    ul.appendChild(li);
+    listDelete.addEventListener("click", (e) => {
+      Storage.removeListFromListsAndSave(list.getName());
+      e.stopPropagation();
+      this.loadLists();
+    });
   }
 
   static enableTaskInput() {
@@ -114,8 +125,8 @@ export default class UI {
                             </button>
                           <div class="dropdownMenu">
                             <ul class="options">
-                             <li><button class="dropdown-btn">Edit</button></li>
-                             <li><button class="dropdown-btn">Delete</button></li>
+                             <li><button class="dropdown-btn task-edit">Edit</button></li>
+                             <li><button class="dropdown-btn task-delete">Delete</button></li>
                              </ul>
                            </div>  
                       </li>`;
