@@ -1,6 +1,6 @@
 import Task from "./Task";
 import List from "./List";
-import Storage from "./Storage";
+import LocalStorage from "./LocalStorage";
 
 export default class UI {
   static loadToDoList() {
@@ -14,8 +14,8 @@ export default class UI {
     const ul = document.querySelector(".lists ul");
     ul.replaceChildren();
 
-    Storage.getListsObject()
-      .getListsArray()
+    LocalStorage.getListsObject()
+      .getArray()
       .forEach((list) => {
         UI.createList(list);
       });
@@ -44,14 +44,14 @@ export default class UI {
     const listEdit = document.querySelector(".list-edit");
     const listDelete = document.querySelector(".list-delete");
     li.addEventListener("click", () => {
-      const lists = Storage.getListsObject();
+      const lists = LocalStorage.getListsObject();
       // Add code to enable inputhere
       UI.enableTaskInput();
 
       UI.loadFreshList(lists.getListByName(list.getName()));
     });
     listDelete.addEventListener("click", (e) => {
-      Storage.removeListFromListsAndSave(list.getName());
+      LocalStorage.removeListFromListsAndSave(list.getName());
       e.stopPropagation();
       this.loadLists();
     });
@@ -74,8 +74,8 @@ export default class UI {
     const h1 = document.querySelector(".list-name");
     h1.textContent = "All tasks";
 
-    const lists = Storage.getListsObject();
-    lists.getListsArray().forEach((list) => {
+    const lists = LocalStorage.getListsObject();
+    lists.getArray().forEach((list) => {
       UI.loadAdditionalList(list);
     });
     UI.renderAllTaskStatuses(lists);
@@ -108,7 +108,7 @@ export default class UI {
   static renderTasks(list) {
     const tasks = document.querySelector(".tasks");
     const listName = list.getName();
-    list.getTasksArray().forEach((task, i) => {
+    list.getArray().forEach((task, i) => {
       tasks.innerHTML += `<li>
                           <div class="task">
                               <input
@@ -117,7 +117,7 @@ export default class UI {
                                   id="${listName}Task${i}"
                               />
                               <label class="taskText" for="${listName}Task${i}"
-                                  >${task.getDescription()}</label
+                                  >${task.getName()}</label
                               >
                               </div>
                             <button class="dropdown-menu-btn">
@@ -134,7 +134,7 @@ export default class UI {
   }
 
   static renderTaskStatuses(list) {
-    list.getTasksArray().forEach((task, i) => {
+    list.getArray().forEach((task, i) => {
       if (!task.getStatus()) {
         // If task is not active
         document.querySelector(
@@ -145,8 +145,8 @@ export default class UI {
   }
 
   static renderAllTaskStatuses(lists) {
-    lists.getListsArray().forEach((list) => {
-      list.getTasksArray().forEach((task, i) => {
+    lists.getArray().forEach((list) => {
+      list.getArray().forEach((task, i) => {
         if (!task.getStatus()) {
           // If task is not active
           document.querySelector(
@@ -164,13 +164,13 @@ export default class UI {
     taskDivs.forEach((taskDiv) => {
       taskDiv.addEventListener("click", (e) => {
         // Problem is it registers separate clicks for label and checkbox
-        const lists = Storage.getListsObject();
+        const lists = LocalStorage.getListsObject();
         const taskName = e.target.labels[0].textContent;
         const list = lists.getListByTaskName(taskName);
         const task = list.getTask(taskName);
         task.toggleStatus();
 
-        Storage.saveLists(lists);
+        LocalStorage.saveLists(lists);
       });
     });
   }
@@ -194,11 +194,11 @@ export default class UI {
     addListForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Add list to storage
+      // Add list to LocalStorage
 
       const listName = listInput.value;
       const newList = new List(listName);
-      Storage.addListToListsAndSave(newList);
+      LocalStorage.addList(newList);
       UI.createList(newList);
 
       this.disableAddListPopup();
@@ -211,9 +211,9 @@ export default class UI {
 
       const newTask = new Task(taskInput.value);
       const listName = document.querySelector(".list-name").textContent;
-      Storage.addTaskToListAndSave(listName, newTask);
+      LocalStorage.addTask(listName, newTask);
 
-      UI.loadFreshList(Storage.getListsObject().getListByName(listName));
+      UI.loadFreshList(LocalStorage.getListsObject().getListByName(listName));
     });
   }
 

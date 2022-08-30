@@ -1,11 +1,11 @@
 export default class Task {
-  constructor(description) {
-    this.description = description;
+  constructor(name) {
+    this.name = name;
     this.active = true;
   }
 
-  getDescription() {
-    return this.description;
+  getName() {
+    return this.name;
   }
 
   getStatus() {
@@ -16,11 +16,11 @@ export default class Task {
     this.active = !this.active;
   }
 
-  setOriginList(listName) {
-    this.originListName = listName;
-  }
-
   getOriginList() {
     return this.originListName;
+  }
+
+  setOriginList(listName) {
+    this.originListName = listName;
   }
 }

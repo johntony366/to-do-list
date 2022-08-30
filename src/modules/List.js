@@ -1,7 +1,7 @@
 export default class List {
   constructor(listName) {
     this.name = listName;
-    this.tasks = [];
+    this.array = [];
   }
 
   getName() {
@@ -10,26 +10,26 @@ export default class List {
 
   addTask(task) {
     task.setOriginList(this.name);
-    this.tasks.push(task);
+    this.array.push(task);
   }
 
   removeTask(taskName) {
-    this.tasks.splice(this.getTaskIndex(taskName), 1);
+    this.array.splice(this.getTaskIndex(taskName), 1);
   }
 
   getTask(taskName) {
-    return this.tasks.find((task) => task.getDescription() === taskName);
+    return this.array.find((task) => task.getName() === taskName);
   }
 
   getTaskIndex(taskName) {
-    return this.tasks.findIndex((task) => task.getDescription() === taskName);
+    return this.array.findIndex((task) => task.getName() === taskName);
   }
 
-  getTasksArray() {
-    return this.tasks;
+  getArray() {
+    return this.array;
   }
 
-  setTasksArray(tasks) {
-    this.tasks = tasks;
+  setArray(array) {
+    this.array = array;
   }
 }

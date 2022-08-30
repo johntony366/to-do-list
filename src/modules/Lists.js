@@ -1,35 +1,35 @@
 export default class Lists {
   constructor() {
-    this.lists = [];
+    this.array = [];
   }
 
   addList(list) {
-    this.lists.push(list);
+    this.array.push(list);
   }
 
   removeList(listName) {
-    this.lists.splice(this.getListIndex(listName), 1);
+    this.array.splice(this.getListIndex(listName), 1);
   }
 
   getListIndex(listName) {
-    return this.lists.findIndex((list) => list.getName() === listName);
+    return this.array.findIndex((list) => list.getName() === listName);
   }
 
   getListByTaskName(taskName) {
-    return this.lists.find((list) =>
-      list.getTasksArray().find((task) => task.getDescription() === taskName)
+    return this.array.find((list) =>
+      list.getArray().find((task) => task.getName() === taskName)
     );
   }
 
   getListByName(listName) {
-    return this.lists.find((list) => list.getName() === listName);
+    return this.array.find((list) => list.getName() === listName);
   }
 
-  getListsArray() {
-    return this.lists;
+  getArray() {
+    return this.array;
   }
 
-  setListsArray(lists) {
-    this.lists = lists;
+  setArray(array) {
+    this.array = array;
   }
 }
