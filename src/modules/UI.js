@@ -26,7 +26,7 @@ export default class UI {
     const li = document.createElement("li");
 
     li.innerHTML = `<button>
-                <i class="fa-regular fa-note-sticky"></i>
+                <i class="fa-regular fa-note-sticky list-icon"></i>
                 <p>${list.getName()}</p>
                 <button class="dropdown-menu-btn">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -69,7 +69,7 @@ export default class UI {
 
   static loadAllTasks() {
     UI.disableTaskInput();
-    const tasks = document.querySelector(".tasks");
+    const tasks = document.querySelector(".tasks-list");
     tasks.replaceChildren();
     const h1 = document.querySelector(".list-name");
     h1.textContent = "All tasks";
@@ -101,12 +101,12 @@ export default class UI {
   }
 
   static resetDisplayedTasks() {
-    const tasks = document.querySelector(".tasks");
+    const tasks = document.querySelector(".tasks-list");
     tasks.replaceChildren();
   }
 
   static renderTasks(list) {
-    const tasks = document.querySelector(".tasks");
+    const tasks = document.querySelector(".tasks-list");
     const listName = list.getName();
     list.getArray().forEach((task, i) => {
       tasks.innerHTML += `<li>
@@ -158,7 +158,7 @@ export default class UI {
   }
 
   static setupTaskToggle() {
-    const tasks = document.querySelector(".tasks");
+    const tasks = document.querySelector(".tasks-list");
     const taskDivs = tasks.querySelectorAll(".task input");
 
     taskDivs.forEach((taskDiv) => {

@@ -1,10 +1,11 @@
 @import "./palette.css";
 
-.lists li {
+.filters-list li,
+.lists-list li {
   position: relative;
 }
 
-.tasks li {
+.tasks-list li {
   position: relative;
 }
 
@@ -12,7 +13,6 @@
 .sidebar .dropdown-menu-btn {
   display: none;
 
-  
   border-radius: 4px;
   width: 8px;
   height: 8px;
@@ -38,6 +38,7 @@
   text-align: left;
   padding: 12px;
   font-size: 0.9rem;
+  border-radius: 0px;
 
   background-color: black;
   color: var(--p1);
@@ -47,7 +48,7 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.lists li .dropdownMenu {
+.lists-list .dropdownMenu {
   opacity: 0;
   pointer-events: none;
 
@@ -60,13 +61,13 @@
   padding: 0.75rem;
 }
 
-.lists li .dropdown-menu-btn:focus + div {
+.lists-list .dropdown-menu-btn:focus + div {
   opacity: 1;
   pointer-events: auto;
 }
 
 /* For tasks */
-.tasks .dropdown-menu-btn {
+.tasks-list .dropdown-menu-btn {
   border: none;
   border-radius: 4px;
 
@@ -80,17 +81,17 @@
   padding: 12px;
 }
 
-.tasks .dropdown-menu-btn:hover {
+.tasks-list .dropdown-menu-btn:hover {
   background-color: rgb(255, 255, 255, 0.5);
 }
 
-.tasks .dropdown-menu-btn i {
+.tasks-list .dropdown-menu-btn i {
   position: absolute;
   top: 6px;
   left: 10px;
 }
 
-.tasks .dropdown-btn {
+.tasks-list .dropdown-btn {
   text-align: left;
   padding: 12px;
   padding-right: 24px;
@@ -101,11 +102,11 @@
   width: 100%;
 }
 
-.tasks .dropdown-btn:hover {
+.tasks-list .dropdown-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.tasks .dropdownMenu {
+.tasks-list .dropdownMenu {
   opacity: 0;
   pointer-events: none;
 
@@ -118,11 +119,11 @@
   padding: 0.75rem;
 }
 
-.tasks .dropdownMenu .options li {
+.tasks-list .dropdownMenu .options li {
   width: 100%;
 }
 
-.tasks .dropdown-menu-btn:focus + div {
+.tasks-list .dropdown-menu-btn:focus + div {
   opacity: 1;
   pointer-events: auto;
 }

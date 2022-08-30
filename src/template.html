@@ -28,28 +28,28 @@
         <div class="sidebar-content">
           <div class="filters">
             <h2>Filters</h2>
-            <ul>
+            <ul class="filters-list">
               <li>
                 <button class="all-tasks-btn">
-                  <i class="fa-solid fa-list-ul"></i>
+                  <i class="fa-solid fa-list-ul filter-icon"></i>
                   <p>All tasks</p>
                 </button>
               </li>
               <li>
                 <button class="due-today-btn">
-                  <i class="fa-solid fa-calendar-day"></i>
+                  <i class="fa-solid fa-calendar-day filter-icon"></i>
                   <p>Due today</p>
                 </button>
               </li>
               <li>
                 <button class="due-week-btn">
-                  <i class="fa-solid fa-calendar-week"></i>
+                  <i class="fa-solid fa-calendar-week filter-icon"></i>
                   <p>Due this week</p>
                 </button>
               </li>
               <li>
                 <button class="overdue-btn">
-                  <i class="fa-solid fa-circle-exclamation"></i>
+                  <i class="fa-solid fa-circle-exclamation filter-icon"></i>
                   <p>Overdue</p>
                 </button>
               </li>
@@ -57,7 +57,7 @@
           </div>
           <div class="lists">
             <h2>Lists</h2>
-            <ul>
+            <ul class="lists-list">
               <!-- <button>
                 <i class="fa-regular fa-note-sticky"></i>
                 <p>${list.getName()}</p>
@@ -70,7 +70,7 @@
               </div> -->
             </ul>
             <button class="add-list-btn">
-              <i class="fa-solid fa-plus"></i>
+              <i class="fa-solid fa-plus add-list-icon"></i>
               <p>Add List</p>
             </button>
             <div class="add-list-popup">
@@ -101,7 +101,7 @@
             <input type="submit" hidden />
           </form>
         </div>
-        <ul class="tasks">
+        <ul class="tasks-list">
           <li>
             <!-- Task HTML Model
             <div class="task">
