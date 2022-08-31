@@ -24,6 +24,7 @@ export default class UI {
   static createList(list) {
     const ul = document.querySelector(".lists ul");
     const li = document.createElement("li");
+    const h1 = document.querySelector(".list-name");
 
     li.innerHTML = `<button class="list-btn">
                 <i class="fa-regular fa-note-sticky list-icon"></i>
@@ -67,11 +68,15 @@ export default class UI {
 
       UI.loadFreshList(lists.getListByName(list.getName()));
     });
+
     listDelete.addEventListener("click", (e) => {
       LocalStorage.removeList(list.getName());
       e.stopPropagation();
       this.loadLists();
-      this.loadAllTasks();
+
+      if (list.getName() === h1.textContent) {
+        this.loadAllTasks();
+      }
     });
   }
 
