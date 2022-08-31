@@ -39,24 +39,27 @@ export default class UI {
                 </ul>
               </div>
     `;
+    li.setAttribute("id", list.getName());
     ul.appendChild(li);
 
-    const listEdit = document.querySelector(".list-edit");
-    const listDelete = document.querySelector(".list-delete");
-    const dropdownMenuButton = document.querySelector(".dropdown-menu-btn");
-    const dropdownMenu = document.querySelector(".dropdownMenu");
+    const listEdit = li.querySelector(".list-edit");
+    const listDelete = li.querySelector(".list-delete");
 
-    dropdownMenuButton.addEventListener("click", (e) => {
-      dropdownMenuButton.classList.toggle("active");
-      dropdownMenu.classList.toggle("active");
+    const listDropdownMenuButton = li.querySelector(".dropdown-menu-btn");
+    const listDropdownMenu = li.querySelector(".dropdownMenu");
+
+    listDropdownMenuButton.addEventListener("click", (e) => {
+      listDropdownMenuButton.classList.toggle("active");
+      listDropdownMenu.classList.toggle("active");
       document.addEventListener("click", (e1) => {
-        if (e1.target !== dropdownMenu) {
-          dropdownMenuButton.classList.remove("active");
-          dropdownMenu.classList.remove("active");
+        if (e1.target !== listDropdownMenu) {
+          listDropdownMenuButton.classList.remove("active");
+          listDropdownMenu.classList.remove("active");
         }
       });
       e.stopPropagation();
     });
+
     li.addEventListener("click", () => {
       const lists = LocalStorage.getListsObject();
       // Add code to enable inputhere
@@ -68,6 +71,7 @@ export default class UI {
       LocalStorage.removeList(list.getName());
       e.stopPropagation();
       this.loadLists();
+      this.loadAllTasks();
     });
   }
 
