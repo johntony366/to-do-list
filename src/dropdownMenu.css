@@ -9,6 +9,10 @@
   position: relative;
 }
 
+.options button {
+  border: none;
+}
+
 /****************/
 /* For sidebar */
 /****************/
@@ -101,7 +105,7 @@
 }
 
 .tasks-list .dropdown-menu-btn.active {
-  background-color: rgb(255, 255, 255, 0.7);
+  background-color: rgb(255, 255, 255, 0.3);
 }
 
 .tasks-list .dropdown-menu-btn i {
