@@ -43,6 +43,20 @@ export default class UI {
 
     const listEdit = document.querySelector(".list-edit");
     const listDelete = document.querySelector(".list-delete");
+    const dropdownMenuButton = document.querySelector(".dropdown-menu-btn");
+    const dropdownMenu = document.querySelector(".dropdownMenu");
+
+    dropdownMenuButton.addEventListener("click", (e) => {
+      dropdownMenuButton.classList.toggle("active");
+      dropdownMenu.classList.toggle("active");
+      document.addEventListener("click", (e1) => {
+        if (e1.target !== dropdownMenu) {
+          dropdownMenuButton.classList.remove("active");
+          dropdownMenu.classList.remove("active");
+        }
+      });
+      e.stopPropagation();
+    });
     li.addEventListener("click", () => {
       const lists = LocalStorage.getListsObject();
       // Add code to enable inputhere
@@ -51,7 +65,7 @@ export default class UI {
       UI.loadFreshList(lists.getListByName(list.getName()));
     });
     listDelete.addEventListener("click", (e) => {
-      LocalStorage.removeListFromListsAndSave(list.getName());
+      LocalStorage.removeList(list.getName());
       e.stopPropagation();
       this.loadLists();
     });

@@ -28,6 +28,10 @@
   background-color: rgb(255, 255, 255, 0.3);
 }
 
+.sidebar .dropdown-menu-btn.active {
+  background-color: rgb(255, 255, 255, 0.5);
+}
+
 .sidebar .dropdown-menu-btn i {
   position: absolute;
   top: 6px;
@@ -48,6 +52,10 @@
   background-color: rgba(255, 255, 255, 0.2);
 }
 
+.sidebar .dropdown-btn.active {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
 .lists-list .dropdownMenu {
   opacity: 0;
   pointer-events: none;
@@ -61,7 +69,7 @@
   padding: 0.75rem;
 }
 
-.lists-list .dropdown-menu-btn:focus + div {
+.lists-list .dropdownMenu.active {
   opacity: 1;
   pointer-events: auto;
 }
