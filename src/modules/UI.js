@@ -125,10 +125,11 @@ export default class UI {
 
   static renderTasks(list) {
     const tasks = document.querySelector(".tasks-list");
+    tasks.replaceChildren();
     const listName = list.getName();
     list.getArray().forEach((task, i) => {
-      tasks.innerHTML += `<li>
-                          <div class="task">
+      const li = document.createElement("li");
+      li.innerHTML = `<div class="task">
                               <input
                                   type="checkbox"
                                   name="taskCompleted"
@@ -146,8 +147,32 @@ export default class UI {
                              <li><button class="dropdown-btn task-edit">Edit</button></li>
                              <li><button class="dropdown-btn task-delete">Delete</button></li>
                              </ul>
-                           </div>  
-                      </li>`;
+                           </div>`;
+      tasks.appendChild(li);
+      const taskEdit = li.querySelector(".task-edit");
+      const taskDelete = li.querySelector(".task-delete");
+
+      const taskDropdownMenuButton = li.querySelector(".dropdown-menu-btn");
+      const taskDropdownMenu = li.querySelector(".dropdownMenu");
+
+      taskDropdownMenuButton.addEventListener("click", (e) => {
+        taskDropdownMenuButton.classList.toggle("active");
+        taskDropdownMenu.classList.toggle("active");
+        document.addEventListener("click", (e1) => {
+          if (e1.target !== taskDropdownMenu) {
+            taskDropdownMenuButton.classList.remove("active");
+            taskDropdownMenu.classList.remove("active");
+          }
+        });
+        e.stopPropagation();
+      });
+
+      taskDelete.addEventListener("click", (e) => {
+        LocalStorage.removeTask(listName, task);
+        e.stopPropagation();
+        const modifiedList = LocalStorage.getListByName(listName);
+        this.renderTasks(modifiedList);
+      });
     });
   }
 
