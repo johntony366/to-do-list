@@ -74,7 +74,7 @@ export default class UI {
       e.stopPropagation();
       this.loadLists();
 
-      if (list.getName() === h1.textContent) {
+      if (list.getName() === h1.textContent || h1.textContent === "All tasks") {
         this.loadAllTasks();
       }
     });
