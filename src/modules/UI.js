@@ -181,7 +181,8 @@ export default class UI {
         } else {
           const modifiedList = LocalStorage.getListByName(listName);
           tasks.replaceChildren();
-          this.renderTasks(modifiedList);
+          UI.renderTasks(modifiedList);
+          UI.renderTaskStatuses(modifiedList);
         }
       });
     });
