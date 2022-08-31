@@ -95,6 +95,10 @@ body > .container {
   padding-left: 32px;
 }
 
+.sidebar .list-btn {
+  padding-right: 40px;
+}
+
 .sidebar button:hover {
   background-color: var(--p2);
 }

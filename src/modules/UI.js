@@ -25,7 +25,7 @@ export default class UI {
     const ul = document.querySelector(".lists ul");
     const li = document.createElement("li");
 
-    li.innerHTML = `<button>
+    li.innerHTML = `<button class="list-btn">
                 <i class="fa-regular fa-note-sticky list-icon"></i>
                 <p>${list.getName()}</p>
                 <button class="dropdown-menu-btn">

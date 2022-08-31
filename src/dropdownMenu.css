@@ -14,7 +14,7 @@
 /****************/
 
 .sidebar .dropdown-menu-btn {
-  display: none;
+  display: block;
 
   border-radius: 4px;
   width: 8px;
@@ -22,7 +22,7 @@
   position: absolute;
   z-index: 1;
   top: 6px;
-  right: 10px;
+  right: 6px;
   background-color: transparent;
   padding: 12px;
 }
@@ -152,5 +152,9 @@
 @media (min-width: 980px) {
   .sidebar .dropdown-menu-btn {
     display: block;
+  }
+
+  .sidebar .dropdown-menu-btn {
+    right: 10px;
   }
 }
