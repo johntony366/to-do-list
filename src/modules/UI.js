@@ -96,6 +96,7 @@ export default class UI {
     lists.getArray().forEach((list) => {
       UI.loadAdditionalList(list);
     });
+    UI.setupTaskToggle();
     UI.renderAllTaskStatuses(lists);
   }
 
@@ -110,7 +111,6 @@ export default class UI {
 
   static loadAdditionalList(list) {
     UI.renderTasks(list);
-    UI.setupTaskToggle();
   }
 
   static setActiveListTitle(listName) {
@@ -125,7 +125,6 @@ export default class UI {
 
   static renderTasks(list) {
     const tasks = document.querySelector(".tasks-list");
-    tasks.replaceChildren();
     const listName = list.getName();
     list.getArray().forEach((task, i) => {
       const li = document.createElement("li");
@@ -170,8 +169,15 @@ export default class UI {
       taskDelete.addEventListener("click", (e) => {
         LocalStorage.removeTask(listName, task);
         e.stopPropagation();
-        const modifiedList = LocalStorage.getListByName(listName);
-        this.renderTasks(modifiedList);
+        const h1 = document.querySelector(".list-name");
+
+        if (h1.textContent === "All tasks") {
+          this.loadAllTasks();
+        } else {
+          const modifiedList = LocalStorage.getListByName(listName);
+          tasks.replaceChildren();
+          this.renderTasks(modifiedList);
+        }
       });
     });
   }
@@ -214,6 +220,7 @@ export default class UI {
         task.toggleStatus();
 
         LocalStorage.saveLists(lists);
+        e.stopPropagation();
       });
     });
   }
