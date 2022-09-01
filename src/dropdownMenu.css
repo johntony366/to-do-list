@@ -57,11 +57,11 @@
 }
 
 .sidebar .dropdown-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgb(75, 75, 75, 1);
 }
 
 .sidebar .dropdown-btn.active {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgb(105, 105, 105);
 }
 
 .lists-list .dropdownMenu {
@@ -81,7 +81,6 @@
   opacity: 1;
   pointer-events: auto;
 }
-
 
 /*************/
 /* For tasks */
@@ -128,7 +127,7 @@
 }
 
 .tasks-list .dropdown-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgb(75, 75, 75, 1);
 }
 
 .tasks-list .dropdownMenu {
