@@ -263,7 +263,6 @@ export default class UI {
 
     addTaskForm.addEventListener("submit", (e) => {
       e.preventDefault();
-
       // Add task to list
 
       const newTask = new Task(taskInput.value);
@@ -271,6 +270,7 @@ export default class UI {
       LocalStorage.addTask(listName, newTask);
 
       UI.loadFreshList(LocalStorage.getListsObject().getListByName(listName));
+      UI.clearTaskInput();
     });
   }
 
@@ -305,5 +305,10 @@ export default class UI {
     ) {
       UI.disableAddListPopup();
     }
+  }
+
+  static clearTaskInput() {
+    const inputTaskText = document.querySelector("#inputTaskText");
+    inputTaskText.value = "";
   }
 }
