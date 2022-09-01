@@ -244,8 +244,9 @@ export default class UI {
       UI.loadAllTasks();
     });
 
-    addListButton.addEventListener("click", () => {
+    addListButton.addEventListener("click", (e) => {
       this.enableAddListPopup();
+      e.stopPropagation();
     });
     addListForm.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -276,16 +277,33 @@ export default class UI {
   static enableAddListPopup() {
     const addListButton = document.querySelector(".add-list-btn");
     const addListPopup = document.querySelector(".add-list-popup");
+    const listNameInput = addListPopup.querySelector(".list-name-input");
 
     addListButton.classList.add("active");
     addListPopup.classList.add("active");
+    listNameInput.focus();
+
+    document.addEventListener("click", UI.exitAddListPopUpWhenLoseFocus);
   }
 
   static disableAddListPopup() {
+    document.removeEventListener("click", UI.exitAddListPopUpWhenLoseFocus);
+
     const addListButton = document.querySelector(".add-list-btn");
     const addListPopup = document.querySelector(".add-list-popup");
+    const listNameInput = addListPopup.querySelector(".list-name-input");
 
     addListButton.classList.remove("active");
     addListPopup.classList.remove("active");
+    listNameInput.value = "";
+  }
+
+  static exitAddListPopUpWhenLoseFocus(e) {
+    if (
+      e.target !== document.querySelector(".list-name-input") &&
+      e.target !== document.querySelector("input.submitAddListForm")
+    ) {
+      UI.disableAddListPopup();
+    }
   }
 }

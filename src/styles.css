@@ -109,6 +109,7 @@ body > .container {
 
 .lists {
   margin-top: 12px;
+  position: relative;
 }
 
 .lists h2,
@@ -142,11 +143,13 @@ body > .container {
 }
 
 .add-list-btn.active {
-  display: none;
+  visibility: hidden;
 }
 
 .add-list-popup {
   display: none;
+  position: absolute;
+  bottom: 6px;
 }
 
 .add-list-popup input[type="text"] {
@@ -154,6 +157,7 @@ body > .container {
   color: inherit;
   border: none;
   border-radius: 12px;
+  margin-top: 16px;
   padding: 4px 0px 4px 12px;
 }
 
