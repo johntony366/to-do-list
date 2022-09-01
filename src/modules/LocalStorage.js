@@ -38,6 +38,12 @@ export default class LocalStorage {
     LocalStorage.saveLists(lists);
   }
 
+  static renameList(originalListName, newListName) {
+    const lists = LocalStorage.getListsObject();
+    lists.renameList(originalListName, newListName);
+    LocalStorage.saveLists(lists);
+  }
+
   static removeList(listName) {
     const lists = LocalStorage.getListsObject();
     lists.removeList(listName);
@@ -49,6 +55,12 @@ export default class LocalStorage {
     const targetList = lists.getListByName(listName);
     targetList.addTask(task);
     LocalStorage.saveLists(lists);
+  }
+
+  static renameTask(listName, task, newTaskName) {
+    const lists = LocalStorage.getListsObject();
+    const targetList = lists.getListByName(listName);
+    targetList.getTask(task.getName()).setName(newTaskName);
   }
 
   static removeTask(listName, task) {
