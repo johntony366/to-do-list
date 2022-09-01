@@ -7,6 +7,11 @@ export default class Lists {
     this.array.push(list);
   }
 
+  renameList(originalListName, newListName) {
+    const list = this.getListByName(originalListName);
+    list.setName(newListName);
+  }
+
   removeList(listName) {
     this.array.splice(this.getListIndex(listName), 1);
   }

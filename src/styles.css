@@ -40,6 +40,16 @@ img {
   align-items: center;
 }
 
+.input-text {
+  background-color: var(--p4);
+  color: inherit;
+  border: none;
+  border-radius: 12px;
+  margin-top: 16px;
+  padding: 4px 0px 4px 12px;
+  width: 100%;
+}
+
 /*  */
 
 body > .container {
@@ -128,6 +138,29 @@ body > .container {
   margin-top: 8px;
 }
 
+.lists-list li {
+  position: relative;
+}
+
+.lists-list .btn-content.disabled {
+  visibility: hidden;
+}
+
+.lists-list .rename-list-popup {
+  display: none;
+  position: absolute;
+  top: 6px;
+  width: 100%;
+}
+
+.lists-list .rename-list-popup.active {
+  display: block;
+}
+
+.list-rename-input {
+  margin-top: 0px;
+}
+
 .filter-icon,
 .list-icon,
 .add-list-icon {
@@ -192,11 +225,6 @@ body > .container {
 }
 
 .main-header input[type="text"] {
-  background-color: var(--p4);
-  color: inherit;
-  border: none;
-  border-radius: 12px;
-  padding: 4px 0px 4px 12px;
   width: 50%;
 }
 
@@ -216,9 +244,31 @@ body > .container {
 
 .tasks-list li {
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 80%;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-content.disabled {
+  visibility: hidden;
+}
+
+.rename-task-popup {
+  display: none;
+  position: absolute;
+  left: 30px;
+  top: 6px;
+}
+
+.rename-task-popup.active {
+  display: block;
+}
+
+.task-rename-input {
+  margin-top: 0px;
 }
 
 .task {

@@ -8,6 +8,10 @@ export default class Task {
     return this.name;
   }
 
+  setName(name) {
+    this.name = name;
+  }
+
   getStatus() {
     return this.active;
   }

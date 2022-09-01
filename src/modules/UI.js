@@ -22,23 +22,38 @@ export default class UI {
   }
 
   static createList(list) {
-    const ul = document.querySelector(".lists ul");
+    const ul = document.querySelector(".lists-list");
     const li = document.createElement("li");
     const h1 = document.querySelector(".list-name");
 
-    li.innerHTML = `<button class="list-btn">
-                <i class="fa-regular fa-note-sticky list-icon"></i>
-                <p>${list.getName()}</p>
-                <button class="dropdown-menu-btn">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-                </button>
-              </button>
-              <div class="dropdownMenu">
-                <ul class="options">
-                  <li><button class="dropdown-btn list-edit">Edit</button></li>
-                  <li><button class="dropdown-btn list-delete">Delete</button></li>
-                </ul>
-              </div>
+    li.innerHTML = `
+    <div class="btn-content">
+      <button class="list-btn">
+        <i class="fa-regular fa-note-sticky list-icon"></i>
+        <p>${list.getName()}</p>
+      </button>
+      <div class="dropdown">
+        <button class="dropdown-menu-btn">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <div class="dropdownMenu">
+          <ul class="options">
+              <li><button class="dropdown-btn list-edit">Edit</button></li>
+              <li><button class="dropdown-btn list-delete">Delete</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="rename-list-popup">
+      <form class="rename-list-form">
+        <input
+          type="text"
+          class="input-text list-rename-input"
+          value="${list.getName()}"
+        />
+        <input class="submitRenameListForm" type="submit" hidden />
+      </form>
+    </div>
     `;
     li.setAttribute("id", list.getName());
     ul.appendChild(li);
@@ -78,6 +93,8 @@ export default class UI {
         this.loadAllTasks();
       }
     });
+
+    listEdit.addEventListener("click", (e) => {});
   }
 
   static enableTaskInput() {
@@ -133,25 +150,39 @@ export default class UI {
     const listName = list.getName();
     list.getArray().forEach((task, i) => {
       const li = document.createElement("li");
-      li.innerHTML = `<div class="task">
-                              <input
-                                  type="checkbox"
-                                  name="taskCompleted"
-                                  id="${listName}Task${i}"
-                              />
-                              <label class="taskText" for="${listName}Task${i}"
-                                  >${task.getName()}</label
-                              >
-                              </div>
-                            <button class="dropdown-menu-btn">
-                              <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                          <div class="dropdownMenu">
-                            <ul class="options">
-                             <li><button class="dropdown-btn task-edit">Edit</button></li>
-                             <li><button class="dropdown-btn task-delete">Delete</button></li>
-                             </ul>
-                           </div>`;
+      li.innerHTML = `
+      <div class="task-content">
+        <div class="task">
+          <input
+            type="checkbox"
+            name="taskCompleted"
+            id="${listName}Task${i}"
+          />
+          <label class="taskText" for="${listName}Task${i}"
+            >${task.getName()}</label
+          >
+        </div>
+        <button class="dropdown-menu-btn">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <div class="dropdownMenu">
+          <ul class="options">
+            <li><button class="dropdown-btn task-edit">Edit</button></li>
+            <li><button class="dropdown-btn task-delete">Delete</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="rename-task-popup">
+        <form class="rename-task-form">
+          <input
+            type="text"
+            class="input-text task-rename-input"
+            value="${task.getName()}"
+          />
+          <input class="submitRenameTaskForm" type="submit" hidden />
+        </form>
+      </div>
+                           `;
       tasks.appendChild(li);
       const taskEdit = li.querySelector(".task-edit");
       const taskDelete = li.querySelector(".task-delete");

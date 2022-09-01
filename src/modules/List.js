@@ -8,6 +8,10 @@ export default class List {
     return this.name;
   }
 
+  setName(name) {
+    this.name = name;
+  }
+
   addTask(task) {
     task.setOriginList(this.name);
     this.array.push(task);
