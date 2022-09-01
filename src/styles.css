@@ -150,7 +150,8 @@ body > .container {
 .add-list-popup {
   display: none;
   position: absolute;
-  top: 60px;
+  top: 59px;
+  width: 100%;
 }
 
 .add-list-popup input[type="text"] {
@@ -160,6 +161,7 @@ body > .container {
   border-radius: 12px;
   margin-top: 16px;
   padding: 4px 0px 4px 12px;
+  width: 100%;
 }
 
 .add-list-popup input[type="text"]::placeholder {
