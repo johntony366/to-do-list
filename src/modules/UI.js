@@ -1,3 +1,4 @@
+import { clearConfigCache } from "prettier";
 import Task from "./Task";
 import List from "./List";
 import LocalStorage from "./LocalStorage";
@@ -101,16 +102,14 @@ export default class UI {
       UI.enableRenameListPopup(listName);
       const listRenameInput = li.querySelector(".list-rename-input");
       renameListForm.addEventListener("submit", (e1) => {
+        e1.preventDefault();
+        UI.disableRenameListPopup();
         LocalStorage.renameList(listName, listRenameInput.value);
         UI.loadLists();
         if (h1.textContent === listName) {
           h1.textContent = listRenameInput.value;
         }
         listRenameInput.value = "";
-        document.removeEventListener(
-          "click",
-          UI.exitRenameListPopUpWhenLoseFocus
-        );
         e1.stopPropagation();
       });
       e.stopPropagation();
@@ -355,23 +354,22 @@ export default class UI {
     const popup = targetList.querySelector(".rename-list-popup");
     const listRenameInput = targetList.querySelector(".list-rename-input");
 
+    targetList.classList.add("edited-list");
     btnContent.classList.add("disabled");
     popup.classList.add("active");
     listRenameInput.focus();
 
-    document.addEventListener(
-      "click",
-      (e) => UI.exitRenameListPopUpWhenLoseFocus
-    );
+    document.addEventListener("click", UI.exitRenameListPopUpWhenLoseFocus);
   }
 
-  static disableRenameListPopup(listName) {
+  static disableRenameListPopup() {
     document.removeEventListener("click", UI.exitRenameListPopUpWhenLoseFocus);
 
-    const targetList = document.querySelector(`#${listName}`);
+    const targetList = document.querySelector(".edited-list");
     const btnContent = targetList.querySelector(".btn-content");
     const popup = targetList.querySelector(".rename-list-popup");
 
+    targetList.classList.remove("edited-list");
     btnContent.classList.remove("disabled");
     popup.classList.remove("active");
   }
@@ -385,12 +383,12 @@ export default class UI {
     }
   }
 
-  static exitRenameListPopUpWhenLoseFocus(e, listName) {
+  static exitRenameListPopUpWhenLoseFocus(e) {
     if (
       !e.target.matches(".list-rename-input") &&
       !e.target.matches("input.submitRenameListForm")
     ) {
-      UI.disableRenameListPopup(listName);
+      UI.disableRenameListPopup();
     }
   }
 
