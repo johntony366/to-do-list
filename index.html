@@ -12,7 +12,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-  <script defer src="main.68f5b0ddb20452f18b29.js"></script></head>
+  <script defer src="main.db037f450b5ee0b09443.js"></script></head>
   <body>
     <div class="container">
       <!-- Header -->
@@ -55,6 +55,20 @@
           </div>
           <div class="lists">
             <h2>Lists</h2>
+            <button class="add-list-btn">
+              <i class="fa-solid fa-plus add-list-icon"></i>
+              <p>Add List</p>
+            </button>
+            <div class="add-list-popup">
+              <form class="add-list-form">
+                <input
+                  type="text"
+                  class="list-name-input"
+                  placeholder="Enter list name"
+                />
+                <input class="submitAddListForm" type="submit" hidden />
+              </form>
+            </div>
             <ul class="lists-list">
               <!-- <button>
                 <i class="fa-regular fa-note-sticky"></i>
@@ -67,20 +81,6 @@
                 </ul>
               </div> -->
             </ul>
-            <button class="add-list-btn">
-              <i class="fa-solid fa-plus add-list-icon"></i>
-              <p>Add List</p>
-            </button>
-            <div class="add-list-popup">
-              <form class="add-list-form">
-                <input
-                  type="text"
-                  class="list-name-input"
-                  placeholder="Enter list name"
-                />
-                <input type="submit" hidden />
-              </form>
-            </div>
           </div>
         </div>
       </aside>
@@ -91,6 +91,7 @@
           <h1 class="list-name">All tasks</h1>
           <form class="addTaskForm">
             <input
+              class="input-text"
               type="text"
               name="inputTaskText"
               id="inputTaskText"
