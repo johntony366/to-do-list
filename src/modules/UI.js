@@ -25,12 +25,13 @@ export default class UI {
     const ul = document.querySelector(".lists-list");
     const li = document.createElement("li");
     const h1 = document.querySelector(".list-name");
+    const listName = list.getName();
 
     li.innerHTML = `
     <div class="btn-content">
       <button class="list-btn">
         <i class="fa-regular fa-note-sticky list-icon"></i>
-        <p>${list.getName()}</p>
+        <p>${listName}</p>
       </button>
       <div class="dropdown">
         <button class="dropdown-menu-btn">
@@ -49,17 +50,19 @@ export default class UI {
         <input
           type="text"
           class="input-text list-rename-input"
-          value="${list.getName()}"
+          value="${listName}"
         />
         <input class="submitRenameListForm" type="submit" hidden />
       </form>
     </div>
     `;
-    li.setAttribute("id", list.getName());
+    li.setAttribute("id", listName);
     ul.appendChild(li);
 
     const listEdit = li.querySelector(".list-edit");
+    const renameListForm = li.querySelector(".rename-list-form");
     const listDelete = li.querySelector(".list-delete");
+    const btnContent = li.querySelector(".btn-content");
 
     const listDropdownMenuButton = li.querySelector(".dropdown-menu-btn");
     const listDropdownMenu = li.querySelector(".dropdownMenu");
@@ -76,25 +79,42 @@ export default class UI {
       e.stopPropagation();
     });
 
-    li.addEventListener("click", () => {
+    btnContent.addEventListener("click", () => {
       const lists = LocalStorage.getListsObject();
       // Add code to enable inputhere
       UI.enableTaskInput();
 
-      UI.loadFreshList(lists.getListByName(list.getName()));
+      UI.loadFreshList(lists.getListByName(listName));
     });
 
     listDelete.addEventListener("click", (e) => {
-      LocalStorage.removeList(list.getName());
+      LocalStorage.removeList(listName);
       e.stopPropagation();
       this.loadLists();
 
-      if (list.getName() === h1.textContent || h1.textContent === "All tasks") {
+      if (listName === h1.textContent || h1.textContent === "All tasks") {
         this.loadAllTasks();
       }
     });
 
-    listEdit.addEventListener("click", (e) => {});
+    listEdit.addEventListener("click", (e) => {
+      UI.enableRenameListPopup(listName);
+      const listRenameInput = li.querySelector(".list-rename-input");
+      renameListForm.addEventListener("submit", (e1) => {
+        LocalStorage.renameList(listName, listRenameInput.value);
+        UI.loadLists();
+        if (h1.textContent === listName) {
+          h1.textContent = listRenameInput.value;
+        }
+        listRenameInput.value = "";
+        document.removeEventListener(
+          "click",
+          UI.exitRenameListPopUpWhenLoseFocus
+        );
+        e1.stopPropagation();
+      });
+      e.stopPropagation();
+    });
   }
 
   static enableTaskInput() {
@@ -329,12 +349,48 @@ export default class UI {
     listNameInput.value = "";
   }
 
+  static enableRenameListPopup(listName) {
+    const targetList = document.querySelector(`#${listName}`);
+    const btnContent = targetList.querySelector(".btn-content");
+    const popup = targetList.querySelector(".rename-list-popup");
+    const listRenameInput = targetList.querySelector(".list-rename-input");
+
+    btnContent.classList.add("disabled");
+    popup.classList.add("active");
+    listRenameInput.focus();
+
+    document.addEventListener(
+      "click",
+      (e) => UI.exitRenameListPopUpWhenLoseFocus
+    );
+  }
+
+  static disableRenameListPopup(listName) {
+    document.removeEventListener("click", UI.exitRenameListPopUpWhenLoseFocus);
+
+    const targetList = document.querySelector(`#${listName}`);
+    const btnContent = targetList.querySelector(".btn-content");
+    const popup = targetList.querySelector(".rename-list-popup");
+
+    btnContent.classList.remove("disabled");
+    popup.classList.remove("active");
+  }
+
   static exitAddListPopUpWhenLoseFocus(e) {
     if (
       e.target !== document.querySelector(".list-name-input") &&
       e.target !== document.querySelector("input.submitAddListForm")
     ) {
       UI.disableAddListPopup();
+    }
+  }
+
+  static exitRenameListPopUpWhenLoseFocus(e, listName) {
+    if (
+      !e.target.matches(".list-rename-input") &&
+      !e.target.matches("input.submitRenameListForm")
+    ) {
+      UI.disableRenameListPopup(listName);
     }
   }
 
