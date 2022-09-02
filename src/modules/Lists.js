@@ -10,6 +10,9 @@ export default class Lists {
   renameList(originalListName, newListName) {
     const list = this.getListByName(originalListName);
     list.setName(newListName);
+    list.array.forEach((task) => {
+      task.setOriginList(newListName);
+    });
   }
 
   removeList(listName) {

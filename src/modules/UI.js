@@ -57,7 +57,7 @@ export default class UI {
       </form>
     </div>
     `;
-    li.setAttribute("id", listName);
+    li.setAttribute("id", listName.replace(/\s/g, ""));
     ul.appendChild(li);
 
     const listEdit = li.querySelector(".list-edit");
@@ -167,7 +167,9 @@ export default class UI {
   static renderTasks(list) {
     const tasks = document.querySelector(".tasks-list");
     const listName = list.getName();
+    const h1 = document.querySelector(".list-name");
     list.getArray().forEach((task, i) => {
+      const taskName = task.getName();
       const li = document.createElement("li");
       li.innerHTML = `
       <div class="task-content">
@@ -175,10 +177,10 @@ export default class UI {
           <input
             type="checkbox"
             name="taskCompleted"
-            id="${listName}Task${i}"
+            id="${listName.replace(/\s/g, "")}Task${i}"
           />
-          <label class="taskText" for="${listName}Task${i}"
-            >${task.getName()}</label
+          <label class="taskText" for="${listName.replace(/\s/g, "")}Task${i}"
+            >${taskName}</label
           >
         </div>
         <button class="dropdown-menu-btn">
@@ -196,14 +198,16 @@ export default class UI {
           <input
             type="text"
             class="input-text task-rename-input"
-            value="${task.getName()}"
+            value="${taskName}"
           />
           <input class="submitRenameTaskForm" type="submit" hidden />
         </form>
       </div>
                            `;
+      li.setAttribute("class", `${taskName.replace(/\s/g, "")}`);
       tasks.appendChild(li);
       const taskEdit = li.querySelector(".task-edit");
+      const renameTaskForm = li.querySelector(".rename-task-form");
       const taskDelete = li.querySelector(".task-delete");
 
       const taskDropdownMenuButton = li.querySelector(".dropdown-menu-btn");
@@ -222,18 +226,39 @@ export default class UI {
       });
 
       taskDelete.addEventListener("click", (e) => {
-        LocalStorage.removeTask(listName, task);
+        const newListName = LocalStorage.getListByTaskName(taskName).getName();
+        LocalStorage.removeTask(newListName, task);
         e.stopPropagation();
-        const h1 = document.querySelector(".list-name");
 
         if (h1.textContent === "All tasks") {
           this.loadAllTasks();
         } else {
-          const modifiedList = LocalStorage.getListByName(listName);
+          const modifiedList = LocalStorage.getListByName(newListName);
           tasks.replaceChildren();
           UI.renderTasks(modifiedList);
           UI.renderTaskStatuses(modifiedList);
         }
+      });
+
+      taskEdit.addEventListener("click", (e) => {
+        const newListName = LocalStorage.getListByTaskName(taskName).getName();
+
+        UI.enableRenameTaskPopup(taskName); // Need to implement
+        const taskRenameInput = li.querySelector(".task-rename-input");
+        renameTaskForm.addEventListener("submit", (e1) => {
+          e1.preventDefault();
+          UI.disableRenameTaskPopup(); // Implement
+          LocalStorage.renameTask(newListName, task, taskRenameInput.value);
+          if (h1.textContent === "All tasks") {
+            UI.loadAllTasks();
+          } else {
+            const newList = LocalStorage.getListByName(newListName);
+            UI.loadFreshList(newList);
+          }
+          taskRenameInput.value = "";
+          e1.stopPropagation();
+        });
+        e.stopPropagation();
       });
     });
   }
@@ -243,7 +268,7 @@ export default class UI {
       if (!task.getStatus()) {
         // If task is not active
         document.querySelector(
-          `#${task.getOriginList()}Task${i}`
+          `#${task.getOriginList().replace(/\s/g, "")}Task${i}`
         ).checked = true;
       }
     });
@@ -255,7 +280,7 @@ export default class UI {
         if (!task.getStatus()) {
           // If task is not active
           document.querySelector(
-            `#${task.getOriginList()}Task${i}`
+            `#${task.getOriginList().replace(/\s/g, "")}Task${i}`
           ).checked = true;
         }
       });
@@ -349,7 +374,9 @@ export default class UI {
   }
 
   static enableRenameListPopup(listName) {
-    const targetList = document.querySelector(`#${listName}`);
+    const targetList = document.querySelector(
+      `#${listName.replace(/\s/g, "")}`
+    );
     const btnContent = targetList.querySelector(".btn-content");
     const popup = targetList.querySelector(".rename-list-popup");
     const listRenameInput = targetList.querySelector(".list-rename-input");
@@ -374,6 +401,32 @@ export default class UI {
     popup.classList.remove("active");
   }
 
+  static enableRenameTaskPopup(taskName) {
+    const targetLi = document.querySelector(`.${taskName.replace(/\s/g, "")}`);
+    const taskContent = targetLi.querySelector(".task-content");
+    const popup = targetLi.querySelector(".rename-task-popup");
+    const taskRenameInput = targetLi.querySelector(".task-rename-input");
+
+    targetLi.classList.add("edited-task");
+    taskContent.classList.add("disabled");
+    popup.classList.add("active");
+    taskRenameInput.focus();
+
+    document.addEventListener("click", UI.exitRenameTaskPopUpWhenLoseFocus);
+  }
+
+  static disableRenameTaskPopup() {
+    document.removeEventListener("click", UI.exitRenameTaskPopUpWhenLoseFocus);
+
+    const targetLi = document.querySelector(".edited-task");
+    const taskContent = targetLi.querySelector(".task-content");
+    const popup = targetLi.querySelector(".rename-task-popup");
+
+    targetLi.classList.remove("edited-task");
+    taskContent.classList.remove("disabled");
+    popup.classList.remove("active");
+  }
+
   static exitAddListPopUpWhenLoseFocus(e) {
     if (
       e.target !== document.querySelector(".list-name-input") &&
@@ -389,6 +442,15 @@ export default class UI {
       !e.target.matches("input.submitRenameListForm")
     ) {
       UI.disableRenameListPopup();
+    }
+  }
+
+  static exitRenameTaskPopUpWhenLoseFocus(e) {
+    if (
+      !e.target.matches(".task-rename-input") &&
+      !e.target.matches("input.submitRenameTaskForm")
+    ) {
+      UI.disableRenameTaskPopup();
     }
   }
 
