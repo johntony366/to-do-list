@@ -350,10 +350,23 @@ export default class UI {
 
       const listName = listInput.value;
       const newList = new List(listName);
-      LocalStorage.addList(newList);
-      UI.createList(listName);
 
-      UI.disableAddListPopup();
+      Validator.validateList(listInput);
+      if (listInput.validity.valid) {
+        LocalStorage.addList(newList);
+        UI.createList(listName);
+
+        UI.disableAddListPopup();
+      } else {
+        listInput.reportValidity();
+        listInput.addEventListener(
+          "input",
+          () => {
+            listInput.setCustomValidity("");
+          },
+          { once: true }
+        );
+      }
     });
 
     addTaskForm.addEventListener("submit", (e) => {

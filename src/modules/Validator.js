@@ -20,4 +20,14 @@ export default class Validator {
     Validator.validateTask(taskRenameInput);
     LocalStorage.addTask(listName, task);
   }
+
+  static validateList(listInput) {
+    if (!/\S/.test(listInput.value)) {
+      listInput.setCustomValidity("Cannot leave list name blank!");
+    } else if (LocalStorage.containsList(listInput.value)) {
+      listInput.setCustomValidity("List is already present");
+    } else {
+      listInput.setCustomValidity("");
+    }
+  }
 }

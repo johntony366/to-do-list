@@ -85,4 +85,8 @@ export default class LocalStorage {
     const lists = LocalStorage.getListsObject();
     return lists.getListByTaskName(taskName);
   }
+
+  static containsList(listName) {
+    return LocalStorage.getListByName(listName);
+  }
 }
