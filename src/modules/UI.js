@@ -1,4 +1,3 @@
-import { clearConfigCache } from "prettier";
 import Task from "./Task";
 import List from "./List";
 import LocalStorage from "./LocalStorage";
@@ -19,15 +18,13 @@ export default class UI {
     LocalStorage.getListsObject()
       .getArray()
       .forEach((list) => {
-        UI.createList(list);
+        UI.createList(list.getName());
       });
   }
 
-  static createList(list) {
+  static createList(listName) {
     const ul = document.querySelector(".lists-list");
     const li = document.createElement("li");
-    const h1 = document.querySelector(".list-name");
-    const listName = list.getName();
 
     li.innerHTML = `
     <div class="btn-content">
@@ -82,35 +79,40 @@ export default class UI {
     });
 
     btnContent.addEventListener("click", () => {
-      const lists = LocalStorage.getListsObject();
-      // Add code to enable inputhere
       UI.enableTaskInput();
-
-      UI.loadFreshList(lists.getListByName(listName));
+      UI.loadFreshList(listName);
     });
 
     listDelete.addEventListener("click", (e) => {
       LocalStorage.removeList(listName);
-      e.stopPropagation();
-      this.loadLists();
+      UI.loadLists();
 
-      if (listName === h1.textContent || h1.textContent === "All tasks") {
-        this.loadAllTasks();
+      const activeListTitle = UI.getActiveListTitle();
+      if (listName === activeListTitle || activeListTitle === "All tasks") {
+        UI.loadAllTasks();
       }
+
+      e.stopPropagation();
     });
 
     listEdit.addEventListener("click", (e) => {
       UI.enableRenameListPopup(listName);
+
       const listRenameInput = li.querySelector(".list-rename-input");
+
       renameListForm.addEventListener("submit", (e1) => {
         e1.preventDefault();
+
+        const newListName = listRenameInput.value;
+
         UI.disableRenameListPopup();
-        LocalStorage.renameList(listName, listRenameInput.value);
+        LocalStorage.renameList(listName, newListName);
         UI.loadLists();
-        if (h1.textContent === listName) {
-          h1.textContent = listRenameInput.value;
+        if (UI.getActiveListTitle() === listName) {
+          UI.loadFreshList(newListName);
         }
         listRenameInput.value = "";
+
         e1.stopPropagation();
       });
       e.stopPropagation();
@@ -129,30 +131,33 @@ export default class UI {
 
   static loadAllTasks() {
     UI.disableTaskInput();
-    const tasks = document.querySelector(".tasks-list");
-    tasks.replaceChildren();
-    const h1 = document.querySelector(".list-name");
-    h1.textContent = "All tasks";
+    UI.resetDisplayedTasks();
+    UI.setActiveListTitle("All tasks");
 
     const lists = LocalStorage.getListsObject();
     lists.getArray().forEach((list) => {
-      UI.loadAdditionalList(list);
+      UI.loadAdditionalList(list.getName());
     });
     UI.setupTaskToggle();
-    UI.renderAllTaskStatuses(lists);
+    UI.renderAllTaskStatuses();
   }
 
-  static loadFreshList(list) {
-    UI.setActiveListTitle(list.getName());
+  static loadFreshList(listName) {
+    UI.setActiveListTitle(listName);
     UI.resetDisplayedTasks();
-    UI.renderTasks(list);
-    UI.renderTaskStatuses(list);
+    UI.renderTasks(listName);
+    UI.renderTaskStatuses(listName);
 
     UI.setupTaskToggle();
   }
 
-  static loadAdditionalList(list) {
-    UI.renderTasks(list);
+  static loadAdditionalList(listName) {
+    UI.renderTasks(listName);
+  }
+
+  static getActiveListTitle() {
+    const h1 = document.querySelector(".list-name");
+    return h1.textContent;
   }
 
   static setActiveListTitle(listName) {
@@ -165,10 +170,10 @@ export default class UI {
     tasks.replaceChildren();
   }
 
-  static renderTasks(list) {
+  static renderTasks(listName) {
     const tasks = document.querySelector(".tasks-list");
-    const listName = list.getName();
-    const h1 = document.querySelector(".list-name");
+    const list = LocalStorage.getListByName(listName);
+
     list.getArray().forEach((task, i) => {
       const taskName = task.getName();
       const li = document.createElement("li");
@@ -207,6 +212,7 @@ export default class UI {
                            `;
       li.setAttribute("class", `${taskName.replace(/\s/g, "")}`);
       tasks.appendChild(li);
+
       const taskEdit = li.querySelector(".task-edit");
       const renameTaskForm = li.querySelector(".rename-task-form");
       const taskDelete = li.querySelector(".task-delete");
@@ -227,24 +233,22 @@ export default class UI {
       });
 
       taskDelete.addEventListener("click", (e) => {
-        const newListName = LocalStorage.getListByTaskName(taskName).getName();
-        LocalStorage.removeTask(newListName, task);
+        LocalStorage.removeTask(listName, task);
         e.stopPropagation();
 
-        if (h1.textContent === "All tasks") {
-          this.loadAllTasks();
+        if (UI.getActiveListTitle() === "All tasks") {
+          UI.loadAllTasks();
         } else {
-          const modifiedList = LocalStorage.getListByName(newListName);
-          tasks.replaceChildren();
+          const modifiedList = LocalStorage.getListByName(listName);
+          UI.resetDisplayedTasks();
           UI.renderTasks(modifiedList);
           UI.renderTaskStatuses(modifiedList);
         }
       });
 
       taskEdit.addEventListener("click", (e) => {
-        const newListName = LocalStorage.getListByTaskName(taskName).getName();
-
         UI.enableRenameTaskPopup(taskName); // Need to implement
+
         const taskRenameInput = li.querySelector(".task-rename-input");
         renameTaskForm.addEventListener("submit", (e1) => {
           e1.preventDefault();
@@ -252,11 +256,11 @@ export default class UI {
           Validator.validateRenameTask(taskRenameInput, taskName);
           if (taskRenameInput.validity.valid) {
             UI.disableRenameTaskPopup();
-            LocalStorage.renameTask(newListName, task, taskRenameInput.value);
-            if (h1.textContent === "All tasks") {
+            LocalStorage.renameTask(listName, task, taskRenameInput.value);
+            if (UI.getActiveListTitle() === "All tasks") {
               UI.loadAllTasks();
             } else {
-              const newList = LocalStorage.getListByName(newListName);
+              const newList = LocalStorage.getListByName(listName);
               UI.loadFreshList(newList);
             }
             taskRenameInput.value = "";
@@ -277,7 +281,8 @@ export default class UI {
     });
   }
 
-  static renderTaskStatuses(list) {
+  static renderTaskStatuses(listName) {
+    const list = LocalStorage.getListByName(listName);
     list.getArray().forEach((task, i) => {
       if (!task.getStatus()) {
         // If task is not active
@@ -288,7 +293,8 @@ export default class UI {
     });
   }
 
-  static renderAllTaskStatuses(lists) {
+  static renderAllTaskStatuses() {
+    const lists = LocalStorage.getListsObject();
     lists.getArray().forEach((list) => {
       list.getArray().forEach((task, i) => {
         if (!task.getStatus()) {
@@ -322,11 +328,13 @@ export default class UI {
 
   static setupButtons() {
     // Add list button
-    const addListForm = document.querySelector(".add-list-form");
     const listInput = document.querySelector(".add-list-form .list-name-input");
-    const addListButton = document.querySelector(".add-list-btn");
-    const addTaskForm = document.querySelector(".addTaskForm");
     const taskInput = document.querySelector("#inputTaskText");
+
+    const addListForm = document.querySelector(".add-list-form");
+    const addListButton = document.querySelector(".add-list-btn");
+
+    const addTaskForm = document.querySelector(".addTaskForm");
     const allTasksButton = document.querySelector(".all-tasks-btn");
 
     allTasksButton.addEventListener("click", () => {
@@ -334,26 +342,23 @@ export default class UI {
     });
 
     addListButton.addEventListener("click", (e) => {
-      this.enableAddListPopup();
+      UI.enableAddListPopup();
       e.stopPropagation();
     });
 
     addListForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      // Add list to LocalStorage
-
       const listName = listInput.value;
       const newList = new List(listName);
       LocalStorage.addList(newList);
-      UI.createList(newList);
+      UI.createList(listName);
 
-      this.disableAddListPopup();
+      UI.disableAddListPopup();
     });
 
     addTaskForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      // Add task to list
 
       const newTask = new Task(taskInput.value);
       const listName = document.querySelector(".list-name").textContent;
@@ -362,7 +367,7 @@ export default class UI {
       if (taskInput.validity.valid) {
         LocalStorage.addTask(listName, newTask);
 
-        UI.loadFreshList(LocalStorage.getListsObject().getListByName(listName));
+        UI.loadFreshList(listName);
         UI.clearTaskInput();
       } else {
         taskInput.reportValidity();
