@@ -47,7 +47,7 @@ img {
   border: none;
   border-radius: 12px;
   margin-top: 16px;
-  padding: 4px 0px 4px 12px;
+  padding: 4px 12px 4px 12px;
   width: 100%;
 }
 
@@ -195,8 +195,8 @@ body > .container {
   border: none;
   border-radius: 12px;
   margin-top: 16px;
-  padding: 4px 0px 4px 12px;
-  width: 100%;
+  padding: 4px 12px 4px 12px;
+  width: 150px;
 }
 
 .add-list-popup input[type="text"]::placeholder {
