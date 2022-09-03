@@ -30,4 +30,11 @@ export default class Validator {
       listInput.setCustomValidity("");
     }
   }
+
+  static validateRenameList(listRenameInput, listName) {
+    const list = LocalStorage.getListByName(listName);
+    LocalStorage.removeList(listName);
+    Validator.validateList(listRenameInput);
+    LocalStorage.addList(list);
+  }
 }

@@ -105,13 +105,25 @@ export default class UI {
 
         const newListName = listRenameInput.value;
 
-        UI.disableRenameListPopup();
-        LocalStorage.renameList(listName, newListName);
-        UI.loadLists();
-        if (UI.getActiveListTitle() === listName) {
-          UI.loadFreshList(newListName);
+        Validator.validateRenameList(listRenameInput, listName);
+        if (listRenameInput.validity.valid) {
+          UI.disableRenameListPopup();
+          LocalStorage.renameList(listName, newListName);
+          UI.loadLists();
+          if (UI.getActiveListTitle() === listName) {
+            UI.loadFreshList(newListName);
+          }
+          listRenameInput.value = "";
+        } else {
+          listRenameInput.reportValidity();
+          listRenameInput.addEventListener(
+            "input",
+            () => {
+              listRenameInput.setCustomValidity("");
+            },
+            { once: true }
+          );
         }
-        listRenameInput.value = "";
 
         e1.stopPropagation();
       });
