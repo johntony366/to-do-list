@@ -12,13 +12,12 @@ export default class Validator {
   }
 
   static validateRenameTask(taskRenameInput, taskName) {
-    const listName = LocalStorage.getListByName(taskName);
-    const task = LocalStorage.getTaskByTaskName(taskName);
+    const list = LocalStorage.getListByTaskName(taskName);
+    const listName = list.getName();
+    const task = list.getTask(taskName);
 
-    LocalStorage.removeTask(taskName);
+    LocalStorage.removeTask(listName, task);
     Validator.validateTask(taskRenameInput);
-    if (!taskRenameInput.validity.valid) {
-      LocalStorage.addTask(listName);
-    }
+    LocalStorage.addTask(listName, task);
   }
 }

@@ -260,8 +260,7 @@ export default class UI {
             if (UI.getActiveListTitle() === "All tasks") {
               UI.loadAllTasks();
             } else {
-              const newList = LocalStorage.getListByName(listName);
-              UI.loadFreshList(newList);
+              UI.loadFreshList(listName);
             }
             taskRenameInput.value = "";
           } else {
