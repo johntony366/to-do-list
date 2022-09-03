@@ -2,6 +2,7 @@ import { clearConfigCache } from "prettier";
 import Task from "./Task";
 import List from "./List";
 import LocalStorage from "./LocalStorage";
+import Validator from "./Validator";
 
 export default class UI {
   static loadToDoList() {
@@ -247,15 +248,28 @@ export default class UI {
         const taskRenameInput = li.querySelector(".task-rename-input");
         renameTaskForm.addEventListener("submit", (e1) => {
           e1.preventDefault();
-          UI.disableRenameTaskPopup(); // Implement
-          LocalStorage.renameTask(newListName, task, taskRenameInput.value);
-          if (h1.textContent === "All tasks") {
-            UI.loadAllTasks();
+
+          Validator.validateRenameTask(taskRenameInput, taskName);
+          if (taskRenameInput.validity.valid) {
+            UI.disableRenameTaskPopup();
+            LocalStorage.renameTask(newListName, task, taskRenameInput.value);
+            if (h1.textContent === "All tasks") {
+              UI.loadAllTasks();
+            } else {
+              const newList = LocalStorage.getListByName(newListName);
+              UI.loadFreshList(newList);
+            }
+            taskRenameInput.value = "";
           } else {
-            const newList = LocalStorage.getListByName(newListName);
-            UI.loadFreshList(newList);
+            taskRenameInput.reportValidity();
+            taskRenameInput.addEventListener(
+              "input",
+              () => {
+                taskRenameInput.setCustomValidity("");
+              },
+              { once: true }
+            );
           }
-          taskRenameInput.value = "";
           e1.stopPropagation();
         });
         e.stopPropagation();
@@ -323,6 +337,7 @@ export default class UI {
       this.enableAddListPopup();
       e.stopPropagation();
     });
+
     addListForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
@@ -342,10 +357,23 @@ export default class UI {
 
       const newTask = new Task(taskInput.value);
       const listName = document.querySelector(".list-name").textContent;
-      LocalStorage.addTask(listName, newTask);
 
-      UI.loadFreshList(LocalStorage.getListsObject().getListByName(listName));
-      UI.clearTaskInput();
+      Validator.validateTask(taskInput);
+      if (taskInput.validity.valid) {
+        LocalStorage.addTask(listName, newTask);
+
+        UI.loadFreshList(LocalStorage.getListsObject().getListByName(listName));
+        UI.clearTaskInput();
+      } else {
+        taskInput.reportValidity();
+        taskInput.addEventListener(
+          "input",
+          () => {
+            taskInput.setCustomValidity("");
+          },
+          { once: true }
+        );
+      }
     });
   }
 

@@ -55,6 +55,11 @@ export default class LocalStorage {
     LocalStorage.saveLists(lists);
   }
 
+  static getTask(taskName) {
+    const lists = LocalStorage.getListsObject();
+    return lists.getTaskByTaskName(taskName);
+  }
+
   static addTask(listName, task) {
     const lists = LocalStorage.getListsObject();
     const targetList = lists.getListByName(listName);
@@ -74,5 +79,10 @@ export default class LocalStorage {
     const list = lists.getListByName(listName);
     list.removeTask(task.getName());
     LocalStorage.saveLists(lists);
+  }
+
+  static containsTask(taskName) {
+    const lists = LocalStorage.getListsObject();
+    return lists.getListByTaskName(taskName);
   }
 }

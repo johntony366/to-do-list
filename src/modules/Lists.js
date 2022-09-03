@@ -23,6 +23,17 @@ export default class Lists {
     return this.array.findIndex((list) => list.getName() === listName);
   }
 
+  getTaskByTaskName(taskName) {
+    for (let i = 0; i < this.array.length; i += 1) {
+      const list = this.array[i];
+      const result = list.getArray.find((task) => task.getName() === taskName);
+      if (result) {
+        return result;
+      }
+    }
+    return undefined;
+  }
+
   getListByTaskName(taskName) {
     return this.array.find((list) =>
       list.getArray().find((task) => task.getName() === taskName)
