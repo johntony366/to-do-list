@@ -14,6 +14,7 @@ body {
   color: var(--p1);
   background-color: var(--p4);
   min-width: 250px;
+  font-size: 16px;
 }
 
 ul {
@@ -259,7 +260,7 @@ body > .container {
 .rename-task-popup {
   display: none;
   position: absolute;
-  left: 30px;
+  left: 20px;
   top: 6px;
 }
 

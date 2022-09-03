@@ -30,6 +30,7 @@
   right: 6px;
   background-color: transparent;
   padding: 12px;
+  font-size: inherit;
 }
 
 .sidebar .dropdown-menu-btn:hover {
@@ -42,7 +43,7 @@
 
 .sidebar .dropdown-menu-btn i {
   position: absolute;
-  top: 6px;
+  top: 4px;
   left: 10px;
 }
 
