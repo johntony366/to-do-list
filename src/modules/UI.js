@@ -298,10 +298,9 @@ export default class UI {
             taskIsActive: true,
           });
         } else {
-          const modifiedList = LocalStorage.getListByName(listName);
           UI.resetDisplayedTasks();
-          UI.renderTasks(modifiedList);
-          UI.renderTaskStatuses(modifiedList);
+          UI.renderTasks(listName);
+          UI.renderTaskStatuses(listName);
         }
       });
 
