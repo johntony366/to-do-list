@@ -88,7 +88,12 @@ export default class UI {
       UI.loadLists();
 
       const activeListTitle = UI.getActiveListTitle();
-      if (listName === activeListTitle || activeListTitle === "All tasks") {
+      if (
+        listName === activeListTitle ||
+        activeListTitle === "All tasks" ||
+        activeListTitle === "Completed tasks" ||
+        activeListTitle === "Pending tasks"
+      ) {
         UI.loadAllTasks();
       }
 
@@ -141,17 +146,29 @@ export default class UI {
     addTaskForm.style.display = "none";
   }
 
-  static loadAllTasks() {
+  static loadAllTasks(flags) {
     UI.disableTaskInput();
     UI.resetDisplayedTasks();
-    UI.setActiveListTitle("All tasks");
+    if (flags) {
+      UI.setActiveListTitle(flags.listName);
+    } else {
+      UI.setActiveListTitle("All tasks");
+    }
 
     const lists = LocalStorage.getListsObject();
     lists.getArray().forEach((list) => {
-      UI.loadAdditionalList(list.getName());
+      UI.loadAdditionalList(list.getName(), flags);
     });
     UI.setupTaskToggle();
-    UI.renderAllTaskStatuses();
+    UI.renderAllTaskStatuses(flags);
+  }
+
+  static loadAllCompletedTasks() {
+    UI.loadAllTasks({ listName: "Completed tasks", taskIsActive: false });
+  }
+
+  static loadAllPendingTasks() {
+    UI.loadAllTasks({ listName: "Pending tasks", taskIsActive: true });
   }
 
   static loadFreshList(listName) {
@@ -163,8 +180,8 @@ export default class UI {
     UI.setupTaskToggle();
   }
 
-  static loadAdditionalList(listName) {
-    UI.renderTasks(listName);
+  static loadAdditionalList(listName, flags) {
+    UI.renderTasks(listName, flags);
   }
 
   static getActiveListTitle() {
@@ -182,11 +199,23 @@ export default class UI {
     tasks.replaceChildren();
   }
 
-  static renderTasks(listName) {
+  static renderTasks(listName, flags) {
     const tasks = document.querySelector(".tasks-list");
     const list = LocalStorage.getListByName(listName);
 
     list.getArray().forEach((task, i) => {
+      if (flags) {
+        if (flags.taskIsActive) {
+          if (!task.getStatus()) {
+            return;
+          }
+        } else if (!flags.taskIsActive) {
+          if (task.getStatus()) {
+            return;
+          }
+        }
+      }
+
       const taskName = task.getName();
       const li = document.createElement("li");
       li.innerHTML = `
@@ -250,6 +279,16 @@ export default class UI {
 
         if (UI.getActiveListTitle() === "All tasks") {
           UI.loadAllTasks();
+        } else if (UI.getActiveListTitle() === "Completed tasks") {
+          UI.loadAllCompletedTasks({
+            listName: "Completed tasks",
+            taskIsActive: false,
+          });
+        } else if (UI.getActiveListTitle() === "Pending tasks") {
+          UI.loadAllPendingTasks({
+            listName: "Pending tasks",
+            taskIsActive: true,
+          });
         } else {
           const modifiedList = LocalStorage.getListByName(listName);
           UI.resetDisplayedTasks();
@@ -271,6 +310,16 @@ export default class UI {
             LocalStorage.renameTask(listName, task, taskRenameInput.value);
             if (UI.getActiveListTitle() === "All tasks") {
               UI.loadAllTasks();
+            } else if (UI.getActiveListTitle() === "Completed tasks") {
+              UI.loadAllCompletedTasks({
+                listName: "Completed tasks",
+                taskIsActive: false,
+              });
+            } else if (UI.getActiveListTitle() === "Pending tasks") {
+              UI.loadAllPendingTasks({
+                listName: "Pending tasks",
+                taskIsActive: true,
+              });
             } else {
               UI.loadFreshList(listName);
             }
@@ -304,12 +353,15 @@ export default class UI {
     });
   }
 
-  static renderAllTaskStatuses() {
+  static renderAllTaskStatuses(flags) {
     const lists = LocalStorage.getListsObject();
     lists.getArray().forEach((list) => {
       list.getArray().forEach((task, i) => {
         if (!task.getStatus()) {
-          // If task is not active
+          if (flags && flags.taskIsActive === true) {
+            return;
+          }
+
           document.querySelector(
             `#${task.getOriginList().replace(/\s/g, "")}Task${i}`
           ).checked = true;
@@ -324,7 +376,6 @@ export default class UI {
 
     taskDivs.forEach((taskDiv) => {
       taskDiv.addEventListener("click", (e) => {
-        // Problem is it registers separate clicks for label and checkbox
         const lists = LocalStorage.getListsObject();
         const taskName = e.target.labels[0].textContent;
         const list = lists.getListByTaskName(taskName);
@@ -347,9 +398,23 @@ export default class UI {
 
     const addTaskForm = document.querySelector(".addTaskForm");
     const allTasksButton = document.querySelector(".all-tasks-btn");
+    const allCompletedTasksButton = document.querySelector(
+      ".all-completed-tasks-btn"
+    );
+    const allPendingTasksButton = document.querySelector(
+      ".all-pending-tasks-btn"
+    );
 
     allTasksButton.addEventListener("click", () => {
       UI.loadAllTasks();
+    });
+
+    allCompletedTasksButton.addEventListener("click", () => {
+      UI.loadAllCompletedTasks();
+    });
+
+    allPendingTasksButton.addEventListener("click", () => {
+      UI.loadAllPendingTasks();
     });
 
     addListButton.addEventListener("click", (e) => {
