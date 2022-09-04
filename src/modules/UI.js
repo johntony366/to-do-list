@@ -88,15 +88,13 @@ export default class UI {
       UI.loadLists();
 
       const activeListTitle = UI.getActiveListTitle();
-      if (
-        listName === activeListTitle ||
-        activeListTitle === "All tasks" ||
-        activeListTitle === "Completed tasks" ||
-        activeListTitle === "Pending tasks"
-      ) {
+      if (listName === activeListTitle || activeListTitle === "All tasks") {
         UI.loadAllTasks();
+      } else if (activeListTitle === "Completed tasks") {
+        UI.loadAllCompletedTasks();
+      } else if (activeListTitle === "Pending tasks") {
+        UI.loadAllPendingTasks();
       }
-
       e.stopPropagation();
     });
 
@@ -115,9 +113,19 @@ export default class UI {
           UI.disableRenameListPopup();
           LocalStorage.renameList(listName, newListName);
           UI.loadLists();
-          if (UI.getActiveListTitle() === listName) {
+
+          const activeListTitle = UI.getActiveListTitle();
+
+          if (activeListTitle === listName) {
             UI.loadFreshList(newListName);
+          } else if (activeListTitle === "All tasks") {
+            UI.loadAllTasks();
+          } else if (activeListTitle === "Completed tasks") {
+            UI.loadAllCompletedTasks();
+          } else if (activeListTitle === "Pending tasks") {
+            UI.loadAllPendingTasks();
           }
+
           listRenameInput.value = "";
         } else {
           listRenameInput.reportValidity();
