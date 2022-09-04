@@ -3,9 +3,9 @@ import LocalStorage from "./LocalStorage";
 export default class Validator {
   static validateTask(taskInput) {
     if (!/\S/.test(taskInput.value)) {
-      taskInput.setCustomValidity("Cannot leave task name blank!");
+      taskInput.setCustomValidity("Invalid task name!");
     } else if (LocalStorage.containsTask(taskInput.value)) {
-      taskInput.setCustomValidity("Task is already present");
+      taskInput.setCustomValidity("Task name must be unique");
     } else {
       taskInput.setCustomValidity("");
     }
@@ -23,9 +23,17 @@ export default class Validator {
 
   static validateList(listInput) {
     if (!/\S/.test(listInput.value)) {
-      listInput.setCustomValidity("Cannot leave list name blank!");
+      listInput.setCustomValidity("Invalid list name!");
+    } else if (
+      ["All tasks", "Completed tasks", "Pending tasks"].find(
+        (taskName) => listInput.value === taskName
+      )
+    ) {
+      listInput.setCustomValidity(
+        `"${listInput.value}" is a reserved list name`
+      );
     } else if (LocalStorage.containsList(listInput.value)) {
-      listInput.setCustomValidity("List is already present");
+      listInput.setCustomValidity("List name must be unique");
     } else {
       listInput.setCustomValidity("");
     }
