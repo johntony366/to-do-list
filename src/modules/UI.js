@@ -105,6 +105,7 @@ export default class UI {
 
       renameListForm.addEventListener("submit", (e1) => {
         e1.preventDefault();
+        listRenameInput.value = listRenameInput.value.trim();
 
         const newListName = listRenameInput.value;
 
@@ -310,6 +311,7 @@ export default class UI {
         const taskRenameInput = li.querySelector(".task-rename-input");
         renameTaskForm.addEventListener("submit", (e1) => {
           e1.preventDefault();
+          taskRenameInput.value = taskRenameInput.value.trim();
 
           Validator.validateRenameTask(taskRenameInput, taskName);
           if (taskRenameInput.validity.valid) {
@@ -431,6 +433,7 @@ export default class UI {
 
     addListForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      listInput.value = listInput.value.trim();
 
       const listName = listInput.value;
       const newList = new List(listName);
@@ -455,6 +458,7 @@ export default class UI {
 
     addTaskForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      taskInput.value = taskInput.value.trim();
 
       const newTask = new Task(taskInput.value);
       const listName = document.querySelector(".list-name").textContent;
