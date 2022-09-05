@@ -4,7 +4,7 @@ export default class Validator {
   static validateTask(taskInput) {
     if (
       !/\S/.test(taskInput.value) ||
-      !/[a-zA-Z0-9_]/.test(taskInput.value) ||
+      /[^a-zA-Z0-9_]/.test(taskInput.value) ||
       /[ ]{2,}/.test(taskInput.value)
     ) {
       taskInput.setCustomValidity("Invalid task name!");
@@ -28,7 +28,7 @@ export default class Validator {
   static validateList(listInput) {
     if (
       !/\S/.test(listInput.value) ||
-      !/[a-zA-Z0-9_ ]/.test(listInput.value) ||
+      /[^a-zA-Z0-9_ ]/.test(listInput.value) ||
       /[ ]{2,}/.test(listInput.value)
     ) {
       listInput.setCustomValidity("Invalid list name!");
